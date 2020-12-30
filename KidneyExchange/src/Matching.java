@@ -1,31 +1,35 @@
 import java.util.HashSet;
 
 public class Matching {
-	int nbNotAssigned; 
-	HashSet<Patient> Assigned;
+	
+	int n;
+	int nbNotAssigned;
+	HashSet<Patient> assigned;
 	HashSet<Patient> notAssigned;
 	
 	Matching(Patient[] T){
-		this.Assigned = new HashSet<Patient>();
+		this.assigned = new HashSet<Patient>();
 		this.notAssigned = new HashSet<Patient>();
 		for (int i =0;i<T.length;i++) {
 			notAssigned.add(T[i]);
 		}
+		this.n = T.length;
 		this.nbNotAssigned = T.length;
 	}
 	
-	void assignement(Patient P,int i){
+	void assign(Patient P,int i){
 		notAssigned.remove(P);
-		Assigned.add(P);
-		P.assignement(i);
+		assigned.add(P);
+		P.assign(i);
 		nbNotAssigned --;
 	}
 	
-	void directDonation(){
+	HashSet<Patient> directDonation(){
 		for (Patient P : notAssigned){
-			if(!P.compatible(P.kidney)) {
-				assignement(P,0);
+			if(!P.isCompatible(P.kidney)) {
+				assign(P,0);
 			}
 		}
+		return assigned;
 	}
 }
