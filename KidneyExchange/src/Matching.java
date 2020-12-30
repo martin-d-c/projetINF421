@@ -32,4 +32,12 @@ public class Matching {
 		}
 		return assigned;
 	}
+	
+	Patient selectChainRuleB() {
+		Patient p = null;
+		for (Patient q: notAssigned)
+			if (p == null || q.compareTo(p) < 0)
+				p = q;
+		return p;
+	}
 }
