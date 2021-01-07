@@ -12,7 +12,7 @@ public class Graph {
 		this.adj.get(P).add(Q);
 	}
 	
-	void removeEdeg(Patient P, Patient Q) {
+	void removeEdge(Patient P, Patient Q) {
 		this.adj.get(P).remove(Q);
 	}
 	
@@ -20,22 +20,36 @@ public class Graph {
 		return this.adj.get(P).contains(Q);
 	}
 	
-	boolean containCycle(){
+	boolean containsCycle(){
 		HashSet<Patient> visited = new HashSet<Patient>();
 		for (Patient P : this.adj.keySet()) {
-			if(!visited.contains(P)) {
+			if (!visited.contains(P)) {
 				
-				while(P.kidney!=0) {
-					if(visited.contains(P)) {
+				while(P.kidney != 0) {
+					if (visited.contains(P)) {
 						return true;
 					}
 					visited.add(P);
-					P = (Patient)this.adj.get(P).toArray()[0];
+					P = (Patient) this.adj.get(P).toArray()[0];
 				}
 				
 				
 			}
 		}
 		return false;
+	}
+	
+	// HYPOTHESE : il n'y a pas de cycle dans le graphe
+	int[] chainSizeAndPriority(Patient p, HashSet<Patient> visited) {
+		int[] res = new int[] {1, p.id}; // size, priority
+		visited.add(p);
+		while(p.kidney != 0) { // termine par hypothèse
+			p = (Patient) this.adj.get(p).toArray()[0];
+			visited.add(p);
+			res[0]++;
+			if (p.id < res[1])
+				res[1]++;
+		}
+		return res;
 	}
 }
