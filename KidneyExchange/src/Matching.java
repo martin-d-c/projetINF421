@@ -1,6 +1,6 @@
 import java.util.HashMap;
 import java.util.HashSet;
-
+import java.util.Arrays;
 public class Matching {
 	
 	int n;
@@ -42,7 +42,31 @@ public class Matching {
 		return assigned;
 	}
 	
-	
+	HashSet<Patient> greedyDonation(){
+		Patient[] T = new Patient[this.nbNotAssigned];
+		Arrays.sort(T);
+		for (Patient P : T) {
+			Patient preferedPatient = P; 
+			for(Patient P2 : this.graph.adj.get(P)) {
+				if(P.P[P2.id] < P.P[preferedPatient.id] ) {
+					preferedPatient = P2;
+					}
+				}
+			if(preferedPatient !=P) {
+				this.assign(P, preferedPatient.id);
+				this.graph.removeEdge(P, preferedPatient);
+			}
+		}
+		for (Patient P : this.notAssigned) {
+			if(P.P[P.id] > P.P[0]) {
+				this.assign(P, 0);
+			}
+			else {
+				this.assign(P,P.id);
+			}
+		}
+		return this.assigned;
+	}
 	Patient selectChainRuleA() {
 		HashSet<Patient> visited = new HashSet<Patient>(); // size en O(1)
 		HashMap<Integer, Patient> patients = new HashMap<Integer, Patient>(); // size en O(1)
