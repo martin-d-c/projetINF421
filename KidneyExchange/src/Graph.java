@@ -20,14 +20,14 @@ public class Graph {
 		return this.adj.get(P).contains(Q);
 	}
 	
-	boolean containsCycle(){
+	Patient getCycle(){
 		HashSet<Patient> visited = new HashSet<Patient>();
 		for (Patient P : this.adj.keySet()) {
 			if (!visited.contains(P)) {
 				
 				while(P.kidney != 0) {
 					if (visited.contains(P)) {
-						return true;
+						return P;
 					}
 					visited.add(P);
 					P = (Patient) this.adj.get(P).toArray()[0];
@@ -36,7 +36,7 @@ public class Graph {
 				
 			}
 		}
-		return false;
+		return null;
 	}
 	
 	// HYPOTHESE : il n'y a pas de cycle dans le graphe

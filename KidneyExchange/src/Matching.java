@@ -9,7 +9,7 @@ public class Matching {
 	HashSet<Patient> notAssigned;
 	Graph graph;
 	
-	Matching(Patient[] T){
+	Matching(Patient[] T) {
 		this.assigned = new HashSet<Patient>();
 		this.notAssigned = new HashSet<Patient>();
 		for (int i =0;i<T.length;i++) {
@@ -18,6 +18,13 @@ public class Matching {
 		this.n = T.length;
 		this.nbNotAssigned = T.length;
 		graph = new Graph();
+	}
+	
+	Matching(Graph G) {
+		// Construire l'objet à partir d'un graphe
+		// Problème : deux types de graphes (parties 2 et 3)
+		// Donc faire une classe par partie, ou donner le graphe en argument des méthodes ?
+		// Pour la partie 2 il faut undirected, pour la 3 directed
 	}
 	
 	void assign(Patient P,int i){
@@ -32,8 +39,8 @@ public class Matching {
 		assign(P, P.kidney);
 	}
 	
-	HashSet<Patient> directDonation(){
-		for (Patient P : notAssigned){
+	HashSet<Patient> directDonation() {
+		for (Patient P : notAssigned) {
 			if(P.isCompatible(P.kidney))
 				assign(P); // On assigne ki à ti
 			else
@@ -42,23 +49,24 @@ public class Matching {
 		return assigned;
 	}
 	
-	HashSet<Patient> greedyDonation(){
-		Patient[] T = new Patient[this.nbNotAssigned];
+	HashSet<Patient> greedyMatching() {
+		// Patient[] T = new Patient[this.nbNotAssigned];
+		Patient[] T = (Patient[]) notAssigned.toArray();
 		Arrays.sort(T);
-		for (Patient P : T) {
-			Patient preferedPatient = P; 
-			for(Patient P2 : this.graph.adj.get(P)) {
-				if(P.P[P2.id] < P.P[preferedPatient.id] ) {
+		for (int i = 0; i < nbNotAssigned; i++) {
+			Patient preferedPatient = T[i]; 
+			for (Patient P2 : this.graph.adj.get(T[i])) {
+				if (T[i].P[P2.id] < T[i].P[preferedPatient.id] ) {
 					preferedPatient = P2;
 					}
 				}
-			if(preferedPatient !=P) {
-				this.assign(P, preferedPatient.id);
-				this.graph.removeEdge(P, preferedPatient);
+			if (preferedPatient !=T[i]) {
+				this.assign(T[i], preferedPatient.id);
+				this.graph.removeEdge(T[i], preferedPatient);
 			}
 		}
 		for (Patient P : this.notAssigned) {
-			if(P.P[P.id] > P.P[0]) {
+			if (P.P[P.id] > P.P[0]) {
 				this.assign(P, 0);
 			}
 			else {
@@ -67,6 +75,40 @@ public class Matching {
 		}
 		return this.assigned;
 	}
+	
+	
+	
+	HashSet<Patient> cyclesAndChainsMatching(boolean ruleB) {
+		while (!notAssigned.isEmpty()) {
+			for (Patient p: notAssigned) {
+				// Là il faut trouver un moyen efficace de trouver son kidney préféré encore disponible
+			}
+			Patient cycle = graph.getCycle();
+			if (cycle != null) {
+				Patient p = (Patient) graph.adj.get(cycle).toArray()[0];
+				Patient pred = cycle;
+				while (pred != cycle) {
+					assign(p);
+					graph.removeEdge(pred, p);
+					pred = p;
+					p = (Patient) graph.adj.get(p).toArray()[0];
+				}
+			}
+			else {
+				Patient tail;
+				if (ruleB) tail = selectChainRuleB();
+				else tail = selectChainRuleA();
+				while (tail.kidney != 0) {
+					assign(tail);
+					tail = (Patient) graph.adj.get(tail).toArray()[0];
+				}
+				assign(tail); // le dernier qui pointe sur w
+			}
+		}
+		return this.assigned;
+	}
+	
+	
 	Patient selectChainRuleA() {
 		HashSet<Patient> visited = new HashSet<Patient>(); // size en O(1)
 		HashMap<Integer, Patient> patients = new HashMap<Integer, Patient>(); // size en O(1)
