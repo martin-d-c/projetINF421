@@ -4,10 +4,13 @@ import java.util.HashSet;
 public class CyclesAndChainsMatching extends Matching {
 	
 	AssignationGraph graph;
+	boolean[] kidneyAvailable;
 	
 	CyclesAndChainsMatching(Patient[] T) {
 		super(T);
 		graph = new AssignationGraph();
+		kidneyAvailable = new boolean[this.n];
+		for (int i = 1; i < n; i++) kidneyAvailable[i] = true;
 	}
 	
 	/*Matching(Graph G) {
@@ -23,6 +26,14 @@ public class CyclesAndChainsMatching extends Matching {
 		while (!notAssigned.isEmpty()) {
 			for (Patient p: notAssigned) {
 				// Là il faut trouver un moyen efficace de trouver son kidney préféré encore disponible
+				int fav = 0;
+				int priority = p.P[0];
+				for (int i = 1; i < n+1; i++)
+					if (p.P[i] < priority && this.kidneyAvailable[i] == true) {
+						fav = i;
+						priority = p.P[i];
+					}
+				p.kidney = fav;
 			}
 			Patient cycle = graph.getCycle();
 			if (cycle != null) {
@@ -30,6 +41,7 @@ public class CyclesAndChainsMatching extends Matching {
 				Patient pred = cycle;
 				while (pred != cycle) {
 					assign(p);
+					this.kidneyAvailable[p.kidney] = false;
 					graph.removeEdge(pred, p);
 					pred = p;
 					p = (Patient) graph.adj.get(p).toArray()[0];
@@ -41,6 +53,7 @@ public class CyclesAndChainsMatching extends Matching {
 				else tail = selectChainRuleA();
 				while (tail.kidney != 0) {
 					assign(tail);
+					this.kidneyAvailable[tail.kidney] = false;
 					tail = (Patient) graph.adj.get(tail).toArray()[0];
 				}
 				assign(tail); // le dernier qui pointe sur w
