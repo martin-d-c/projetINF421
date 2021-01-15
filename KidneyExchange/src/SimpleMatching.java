@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -10,12 +11,10 @@ public class SimpleMatching extends Matching {
 		graph = new CompatibilityGraph();
 	}
 	
-	/*SimpleMatching(CompatibilityGraph G) {
-		// Construire l'objet à partir d'un graphe
-		// Problème : deux types de graphes (parties 2 et 3)
-		// Donc faire une classe par partie, ou donner le graphe en argument des méthodes ?
-		// Pour la partie 2 il faut undirected, pour la 3 directed
-	}*/
+	SimpleMatching(String path) throws IOException {
+		graph = new CompatibilityGraph(path);
+		this.n = graph.n;
+	}
 	
 	HashSet<Patient> directDonation() {
 		for (Patient P : notAssigned) {

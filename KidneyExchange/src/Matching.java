@@ -7,6 +7,13 @@ public abstract class Matching {
 	HashSet<Patient> assigned;
 	HashSet<Patient> notAssigned;
 	
+	Matching() {
+		n = 0;
+		nbNotAssigned = 0;
+		assigned = new HashSet<Patient>();
+		notAssigned = new HashSet<Patient>();
+	}
+	
 	Matching(Patient[] T) {
 		this.assigned = new HashSet<Patient>();
 		this.notAssigned = new HashSet<Patient>();

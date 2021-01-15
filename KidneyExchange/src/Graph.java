@@ -4,6 +4,7 @@ import java.util.HashMap;
 public abstract class Graph {
 	
 	HashMap<Patient,HashSet<Patient>> adj;
+	int n; // number of vertices
 	
 	void addPatient(Patient P){
 		this.adj.put(P, new HashSet<Patient>());

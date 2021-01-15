@@ -12,6 +12,7 @@ public class CompatibilityGraph extends Graph {
 	
 	CompatibilityGraph() {
 		this.adj = new HashMap<Patient,HashSet<Patient>>();
+		this.n = 0;
 	}
 
 	CompatibilityGraph(String path) throws IOException {
@@ -25,7 +26,7 @@ public class CompatibilityGraph extends Graph {
 		System.out.println("Erreur d'ouverture");
 	    }
 	   
-	    int n = br.readLine().toCharArray()[0];
+	    this.n = br.readLine().toCharArray()[0];
 	    Patient[] listPatient = new Patient[n];
 	    for(int i =0; i<n;i++) {
 	    	String[] ligne = br.readLine().split(" ");

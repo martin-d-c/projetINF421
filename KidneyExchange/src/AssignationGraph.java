@@ -8,6 +8,7 @@ public class AssignationGraph extends Graph {
 	
 	AssignationGraph() {
 		this.adj = new HashMap<Patient,HashSet<Patient>>();
+		this.n = 0;
 	}
 	
 	
@@ -23,7 +24,7 @@ public class AssignationGraph extends Graph {
 		System.out.println("Erreur d'ouverture");
 	    }
 	   
-	    int n = br.readLine().toCharArray()[0];
+	    this.n = br.readLine().toCharArray()[0];
 	    
 	    for(int i =0; i<n;i++) {
 	    	String[] ligne = br.readLine().split(" ");

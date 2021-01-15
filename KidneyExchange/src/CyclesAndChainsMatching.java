@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -13,13 +14,10 @@ public class CyclesAndChainsMatching extends Matching {
 		for (int i = 1; i < n; i++) kidneyAvailable[i] = true;
 	}
 	
-	/*Matching(Graph G) {
-		// Construire l'objet à partir d'un graphe
-		// Problème : deux types de graphes (parties 2 et 3)
-		// Donc faire une classe par partie, ou donner le graphe en argument des méthodes ?
-		// Pour la partie 2 il faut undirected, pour la 3 directed
-	}*/
-	
+	public CyclesAndChainsMatching(String path) throws IOException {
+		graph = new AssignationGraph(path);
+		this.n = graph.n;
+	}
 	
 	
 	HashSet<Patient> match(boolean ruleB) {
