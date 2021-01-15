@@ -17,7 +17,6 @@ public abstract class Matching {
 		this.nbNotAssigned = T.length;
 	}
 	
-
 	
 	void assign(Patient P,int i){
 		notAssigned.remove(P);
@@ -29,6 +28,14 @@ public abstract class Matching {
 	// Assigne à P le rein vers lequel il pointe
 	void assign(Patient P) {
 		assign(P, P.kidney);
+	}
+	
+	
+	public String toString() {
+		StringBuffer bf = new StringBuffer();
+		for (Patient p: assigned)
+			bf.append("Patient " + p.id + " -> Kidney " + p.kidney + "\n");
+		return bf.toString();
 	}
 	
 }
