@@ -32,7 +32,6 @@ public class AssignationGraph extends Graph {
 	    	int[] P = new int[n];
 	    	int[] compatible = new int[ligne.length];
 	    	for(int j = 0;j<ligne.length;j++) {
-	    		
 	    		int k = ligne[j].toCharArray()[0];
 	    		K[k] = true;
 	    		P[k] = j;
