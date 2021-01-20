@@ -29,6 +29,7 @@ public abstract class Graph {
 	    	String[] ligne = br.readLine().split(" ");
 	    	boolean[] K = new boolean[n+1];
 	    	int[] P = new int[n+1];
+	    	for(int j= 0;j<P.length;j++) { P[j] = n+2; }
 	    	int[] compatible = new int[ligne.length];
 	    	for(int j = 0;j<ligne.length;j++) {
 	    		int k = Integer.parseInt(ligne[j]);
@@ -36,7 +37,7 @@ public abstract class Graph {
 	    		P[k] = j;
 	    		compatible[j] = k;
 	    	}
-	    	addPatient(new Patient(i,K,P));
+	    	addPatient(new Patient(i+1,K,P));
 	    }
 	    br.close();
 	}
