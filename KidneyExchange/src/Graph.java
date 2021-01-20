@@ -13,6 +13,7 @@ public abstract class Graph {
 	int n; // number of vertices
 	
 	void readFile(String path) throws IOException {
+		this.adj = new HashMap<Patient,HashSet<Patient>>();
 		BufferedReader br = null;
 		
 	    try  {
@@ -21,15 +22,16 @@ public abstract class Graph {
 	    catch(FileNotFoundException exc) {
 		System.out.println("Erreur d'ouverture");
 	    }
-	   
-	    this.n = br.readLine().toCharArray()[0];
+	    
+	    this.n = Integer.parseInt(br.readLine());
+	    
 	    for(int i =0; i<n;i++) {
 	    	String[] ligne = br.readLine().split(" ");
-	    	boolean[] K = new boolean[n];
-	    	int[] P = new int[n];
+	    	boolean[] K = new boolean[n+1];
+	    	int[] P = new int[n+1];
 	    	int[] compatible = new int[ligne.length];
 	    	for(int j = 0;j<ligne.length;j++) {
-	    		int k = ligne[j].toCharArray()[0];
+	    		int k = Integer.parseInt(ligne[j]);
 	    		K[k] = true;
 	    		P[k] = j;
 	    		compatible[j] = k;
@@ -53,5 +55,11 @@ public abstract class Graph {
 	
 	boolean hasEdge(Patient P,Patient Q) {
 		return this.adj.get(P).contains(Q);
+	}
+	
+	HashSet<Patient> getVertices(){
+		HashSet<Patient> H = new HashSet<Patient>();
+		H.addAll(this.adj.keySet());
+		return H;
 	}
 }

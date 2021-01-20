@@ -14,6 +14,9 @@ public class SimpleMatching extends Matching {
 	SimpleMatching(String path) throws IOException {
 		graph = new CompatibilityGraph(path);
 		this.n = graph.n;
+		this.nbNotAssigned = graph.n;
+		this.notAssigned = graph.getVertices();
+		this.assigned = new HashSet<Patient>();
 	}
 	
 	HashSet<Patient> directDonation() {

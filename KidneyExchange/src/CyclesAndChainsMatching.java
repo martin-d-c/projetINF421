@@ -17,6 +17,9 @@ public class CyclesAndChainsMatching extends Matching {
 	public CyclesAndChainsMatching(String path) throws IOException {
 		graph = new AssignationGraph(path);
 		this.n = graph.n;
+		this.nbNotAssigned = graph.n;
+		this.notAssigned = graph.getVertices();
+		this.assigned = new HashSet<Patient>();
 	}
 	
 	

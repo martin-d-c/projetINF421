@@ -14,7 +14,10 @@ public class AssignationGraph extends Graph {
 	
 	// create a graph without edges
 	AssignationGraph(String path) throws IOException {
-		BufferedReader br = null;
+		
+		this.readFile(path);
+		
+		/* BufferedReader br = null;
 	    
 
 	    try  {
@@ -41,7 +44,7 @@ public class AssignationGraph extends Graph {
 	    	
 	    }
 	    
-	    br.close();
+	    br.close(); */
 	}
 	
 	Patient getCycle(){
