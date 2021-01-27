@@ -20,7 +20,8 @@ public class SimpleMatching extends Matching {
 	}
 	
 	HashSet<Patient> directDonation() {
-		HashSet<Patient> notAssignedCopy = (HashSet<Patient>)this.notAssigned.clone();
+		@SuppressWarnings("unchecked")
+		HashSet<Patient> notAssignedCopy = (HashSet<Patient>) this.notAssigned.clone();
 		for (Patient P : notAssignedCopy) {
 			if(P.isCompatible(P.kidney))
 				assign(P); // On assigne ki à ti
@@ -61,6 +62,7 @@ public class SimpleMatching extends Matching {
 				}
 			}
 		}
+		@SuppressWarnings("unchecked")
 		HashSet<Patient> notAssignedCopy = (HashSet<Patient>)this.notAssigned.clone();
 		for (Patient P : notAssignedCopy) {
 			if (P.K[P.id]) {

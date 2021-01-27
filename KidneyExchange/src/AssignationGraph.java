@@ -14,51 +14,25 @@ public class AssignationGraph extends Graph {
 	
 	// create a graph without edges
 	AssignationGraph(String path) throws IOException {
-		
-		/*this.readFile(path);
-		
-		BufferedReader br = null;
-	    
-
-	    try  {
-		br = new BufferedReader(new FileReader(new File(path)));
-	    }
-	    catch(FileNotFoundException exc) {
-		System.out.println("Erreur d'ouverture");
-	    }
-	   
-	    this.n = Integer.parseInt(br.readLine());
-	    
-	    for(int i =0; i<n;i++) {
-	    	String[] ligne = br.readLine().split(" ");
-	    	boolean[] K = new boolean[n+1];
-	    	int[] P = new int[n+1];
-	    	int[] compatible = new int[ligne.length];
-	    	for(int j = 0;j<ligne.length;j++) {
-	    		int k = Integer.parseInt(ligne[j]);
-	    		K[k] = true;
-	    		P[k] = j;
-	    		compatible[j] = k;
-	    	}
-	    	this.adj.put(new Patient(i,K,P), new HashSet<Patient>());
-	    	
-	    }
-	    
-	    br.close();*/
-		
 		readFile(path);
 	}
 	
+	
+	
 	Patient getCycle(){
 		HashSet<Patient> visited = new HashSet<Patient>();
+		HashSet<Patient> visitedCycle = new HashSet<Patient>();
 		for (Patient P : this.adj.keySet()) {
+			visitedCycle.clear();
 			if (!visited.contains(P)) {
 				
 				while(P.kidney != 0) {
-					if (visited.contains(P)) {
+					if (visitedCycle.contains(P)) {
 						return P;
 					}
 					visited.add(P);
+					visitedCycle.add(P);
+					if (this.adj.get(P).toArray().length == 0) break;
 					P = (Patient) this.adj.get(P).toArray()[0];
 				}
 				

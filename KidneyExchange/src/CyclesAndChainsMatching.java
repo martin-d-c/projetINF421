@@ -32,7 +32,21 @@ public class CyclesAndChainsMatching extends Matching {
 	
 	
 	HashSet<Patient> match(boolean ruleB) {
+		// 1er tour
+		for (Patient p: notAssigned) {
+			int fav = 0;
+			int priority = p.P[0];
+			for (int i = 1; i < n+1; i++)
+				if (p.P[i] < priority && this.kidneyAvailable[i] == true) {
+					fav = i;
+					priority = p.P[i];
+				}
+			p.kidney = fav;
+			graph.addEdge(p, patientsById.get(fav));
+		}
+		
 		while (!notAssigned.isEmpty()) {
+			
 			for (Patient p: notAssigned) {
 				if (!this.kidneyAvailable[p.kidney]) {
 					graph.removeEdge(p, patientsById.get(p.kidney));
@@ -48,17 +62,21 @@ public class CyclesAndChainsMatching extends Matching {
 					graph.addEdge(p, patientsById.get(fav));
 				}
 			}
+			
 			Patient cycle = graph.getCycle();
 			if (cycle != null) {
 				Patient p = (Patient) graph.adj.get(cycle).toArray()[0];
 				Patient pred = cycle;
-				while (pred != cycle) {
+				while (p != cycle) {
 					assign(p);
 					this.kidneyAvailable[p.kidney] = false;
 					graph.removeEdge(pred, p);
 					pred = p;
 					p = (Patient) graph.adj.get(p).toArray()[0];
 				}
+				assign(p);
+				this.kidneyAvailable[p.kidney] = false;
+				graph.removeEdge(pred, p);
 			}
 			else {
 				Patient tail;
