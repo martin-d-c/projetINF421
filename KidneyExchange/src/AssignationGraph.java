@@ -52,7 +52,7 @@ public class AssignationGraph extends Graph {
 			visited.add(p);
 			res[0]++;
 			if (p.id < res[1])
-				res[1]++;
+				res[1] = p.id;
 		}
 		return res;
 	}

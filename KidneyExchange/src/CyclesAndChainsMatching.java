@@ -114,7 +114,7 @@ public class CyclesAndChainsMatching extends Matching {
 			}
 		// Sélection de la w-chain parmi les plus longues
 		if (patients.size() == 1)
-			return (Patient) patients.keySet().toArray()[0];
+			return (Patient) patients.values().toArray()[0];
 		for (int i = 1;;i++) {
 			Patient p = patients.get(i);
 			if (p != null)
