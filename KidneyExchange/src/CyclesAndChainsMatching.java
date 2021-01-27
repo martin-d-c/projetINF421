@@ -6,12 +6,14 @@ public class CyclesAndChainsMatching extends Matching {
 	
 	AssignationGraph graph;
 	boolean[] kidneyAvailable;
+	HashMap<Integer, Patient> patientsById;
 	
 	CyclesAndChainsMatching(Patient[] T) {
 		super(T);
 		graph = new AssignationGraph();
-		kidneyAvailable = new boolean[this.n];
-		for (int i = 1; i < n; i++) kidneyAvailable[i] = true;
+		kidneyAvailable = new boolean[this.n+1];
+		for (int i = 1; i < n+1; i++) kidneyAvailable[i] = true;
+		patientsById = new HashMap<Integer, Patient>();
 	}
 	
 	public CyclesAndChainsMatching(String path) throws IOException {
@@ -20,21 +22,31 @@ public class CyclesAndChainsMatching extends Matching {
 		this.nbNotAssigned = graph.n;
 		this.notAssigned = graph.getVertices();
 		this.assigned = new HashSet<Patient>();
+		kidneyAvailable = new boolean[this.n+1];
+		for (int i = 1; i < n+1; i++) kidneyAvailable[i] = true;
+		patientsById = new HashMap<Integer, Patient>();
+		for (Patient p: notAssigned) {
+			patientsById.put(p.id, p);
+		}
 	}
 	
 	
 	HashSet<Patient> match(boolean ruleB) {
 		while (!notAssigned.isEmpty()) {
 			for (Patient p: notAssigned) {
-				// Là il faut trouver un moyen efficace de trouver son kidney préféré encore disponible
-				int fav = 0;
-				int priority = p.P[0];
-				for (int i = 1; i < n+1; i++)
-					if (p.P[i] < priority && this.kidneyAvailable[i] == true) {
-						fav = i;
-						priority = p.P[i];
-					}
-				p.kidney = fav;
+				if (!this.kidneyAvailable[p.kidney]) {
+					graph.removeEdge(p, patientsById.get(p.kidney));
+					// Là il faut trouver un moyen efficace de trouver son kidney préféré encore disponible
+					int fav = 0;
+					int priority = p.P[0];
+					for (int i = 1; i < n+1; i++)
+						if (p.P[i] < priority && this.kidneyAvailable[i] == true) {
+							fav = i;
+							priority = p.P[i];
+						}
+					p.kidney = fav;
+					graph.addEdge(p, patientsById.get(fav));
+				}
 			}
 			Patient cycle = graph.getCycle();
 			if (cycle != null) {

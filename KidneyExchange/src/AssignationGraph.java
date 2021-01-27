@@ -15,9 +15,9 @@ public class AssignationGraph extends Graph {
 	// create a graph without edges
 	AssignationGraph(String path) throws IOException {
 		
-		this.readFile(path);
+		/*this.readFile(path);
 		
-		/* BufferedReader br = null;
+		BufferedReader br = null;
 	    
 
 	    try  {
@@ -27,15 +27,15 @@ public class AssignationGraph extends Graph {
 		System.out.println("Erreur d'ouverture");
 	    }
 	   
-	    this.n = br.readLine().toCharArray()[0];
+	    this.n = Integer.parseInt(br.readLine());
 	    
 	    for(int i =0; i<n;i++) {
 	    	String[] ligne = br.readLine().split(" ");
-	    	boolean[] K = new boolean[n];
-	    	int[] P = new int[n];
+	    	boolean[] K = new boolean[n+1];
+	    	int[] P = new int[n+1];
 	    	int[] compatible = new int[ligne.length];
 	    	for(int j = 0;j<ligne.length;j++) {
-	    		int k = ligne[j].toCharArray()[0];
+	    		int k = Integer.parseInt(ligne[j]);
 	    		K[k] = true;
 	    		P[k] = j;
 	    		compatible[j] = k;
@@ -44,7 +44,9 @@ public class AssignationGraph extends Graph {
 	    	
 	    }
 	    
-	    br.close(); */
+	    br.close();*/
+		
+		readFile(path);
 	}
 	
 	Patient getCycle(){

@@ -41,7 +41,7 @@ public abstract class Matching {
 	public String toString() {
 		StringBuffer bf = new StringBuffer();
 		for (Patient p: assigned)
-			bf.append("Patient " + p.id + " -> Kidney " + p.kidney + "\n");
+			bf.append("Patient " + p.id + " --> Kidney " + p.kidney + "\n");
 		return bf.toString();
 	}
 	
