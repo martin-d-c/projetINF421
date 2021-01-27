@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class Test {
 
@@ -22,6 +23,11 @@ public class Test {
 		CyclesAndChainsMatching test4 = new CyclesAndChainsMatching("Test1");
 		test4.match(true);
 		System.out.println(test4);
+		
+		System.out.println("Minimum feasible paths");
+		DirectedCompatibilityGraph graph = new DirectedCompatibilityGraph("Test1");
+		LinkedList<LinkedList<Patient>> paths = graph.computeAllMinimalInfeasiblePaths(3);
+		System.out.println(DirectedCompatibilityGraph.toInt(paths));
 	}
 
 }
