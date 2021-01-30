@@ -11,76 +11,83 @@ public class QuantitativeAnalysis {
 	static int c = 3;
 	static int n = 30;
 	static int N = 5; // number of kidney exchange problem generated
-	static int[] frequencies = {46,85,96};
+	static double[] frequencies = {0.46,0.85,0.96};
 	public static  void generateConfiguration() throws IOException{
-		for(int i = 0;i<N;i++) {
-			List<Integer> AType = new LinkedList<Integer>();
-			List<Integer> BType = new LinkedList<Integer>();
-			List<Integer> ABType = new LinkedList<Integer>();
-			List<Integer> OType = new LinkedList<Integer>();
-			String[] bloodType = new String[n];
+		for(int i = 1;i<N+1;i++) {
+			List<Integer> ACompatible = new LinkedList<Integer>();
+			List<Integer> BCompatible = new LinkedList<Integer>();
+			List<Integer> ABCompatible = new LinkedList<Integer>();
+			List<Integer> OCompatible = new LinkedList<Integer>();
+			String[] bloodType = new String[n+1];
 			
-			for(int j = 0;j<n;j++) {
+			for(int j = 1;j<n+1;j++) {
 				double prop = Math.random();
-				if(prop<1/frequencies[0]) { OType.add(j); bloodType[j] = "O"; }
-				else if(prop<1/frequencies[1]) { AType.add(j);bloodType[j] = "A";}
-				else if(prop<1/frequencies[2]) { BType.add(j);bloodType[j] = "B";}
-				else { ABType.add(j);bloodType[j] = "AB";}
+				
+				if(prop<frequencies[0]) {  bloodType[j] = "O";OCompatible.add(j); ACompatible.add(j);BCompatible.add(j);ABCompatible.add(j);}
+				else if(prop<frequencies[1]) {bloodType[j] = "A"; ACompatible.add(j);ABCompatible.add(j);}
+				else if(prop<frequencies[2]) {bloodType[j] = "B";BCompatible.add(j);ABCompatible.add(j);}
+				else { bloodType[j] = "AB";ABCompatible.add(j);}
 			}
 			
 			PrintWriter writer = new PrintWriter(new File("testfile"+i+".txt"));
 			writer.println(n);
 			
-			for(int j = 0;j<n;j++) {
+			for(int j = 1;j<n+1;j++) {
+				
 				if(bloodType[j] == "O") {
-					OType.remove(j);
 					
-					Collections.shuffle(OType);
-					for(int k : OType) {
+					
+					Collections.shuffle(OCompatible);
+					for(int k : OCompatible) {
+						if(k==j) {break;}
 						writer.print(k);
 						writer.print(" ");
 					}
-					OType.add(j);
-					if(Math.random() <1/2) {writer.print(0);writer.print(" ");}
+					
+					if(Math.random() <0.5) {writer.print(0);writer.print(" ");}
 					else {writer.print(j);writer.print(" ");}
 					writer.println();
 				}
 				else if(bloodType[j] == "A") {
-					AType.remove(j);
+				
 					
-					Collections.shuffle(AType);
-					for(int k : AType) {
+					Collections.shuffle(ACompatible);
+					for(int k : ACompatible) {
+						if(k==j) {break;}
 						writer.print(k);
 						writer.print(" ");
 					}
-					AType.add(j);
-					if(Math.random() <1/2) {writer.print(0);writer.print(" ");}
+					
+					if(Math.random() <0.5) {writer.print(0);writer.print(" ");}
 					else {writer.print(j);writer.print(" ");}
 					writer.println();
 				}
 				else if(bloodType[j] == "B") {
-					BType.remove(j);
 					
-					Collections.shuffle(BType);
-					for(int k : BType) {
+					
+					Collections.shuffle(BCompatible);
+					for(int k : BCompatible) {
+						if(k==j) {break;}
 						writer.print(k);
 						writer.print(" ");
 					}
-					BType.add(j);
-					if(Math.random() <1/2) {writer.print(0);writer.print(" ");}
+					
+					if(Math.random() <0.5) {writer.print(0);writer.print(" ");}
 					else {writer.print(j);writer.print(" ");}
 					writer.println();
 				}
 				else {
-					ABType.remove(j);
 					
-					Collections.shuffle(ABType);
-					for(int k : ABType) {
+					
+					
+					Collections.shuffle(ABCompatible);
+					for(int k : ABCompatible) {
+						if(k==j) {break;}
 						writer.print(k);
 						writer.print(" ");
 					}
-					ABType.add(j);
-					if(Math.random() <1/2) { writer.print(0); writer.print(" ");}
+					
+					if(Math.random() <0.5) { writer.print(0); writer.print(" ");}
 					else {writer.print(j);writer.print(" ");}
 					writer.println();
 				}
