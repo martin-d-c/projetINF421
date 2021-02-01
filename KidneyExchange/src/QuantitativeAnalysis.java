@@ -14,6 +14,7 @@ public class QuantitativeAnalysis {
 	static double[] frequencies = {0.46,0.85,0.96};
 	public static  void generateConfiguration() throws IOException{
 		for(int i = 1;i<N+1;i++) {
+			
 			List<Integer> ACompatible = new LinkedList<Integer>();
 			List<Integer> BCompatible = new LinkedList<Integer>();
 			List<Integer> ABCompatible = new LinkedList<Integer>();
@@ -100,5 +101,6 @@ public class QuantitativeAnalysis {
 	}
 	public static void main(String[] args) throws IOException{
 		generateConfiguration();
+		
 	}
 }
