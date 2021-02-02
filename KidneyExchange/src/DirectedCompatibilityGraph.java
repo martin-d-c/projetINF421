@@ -19,38 +19,30 @@ public class DirectedCompatibilityGraph extends Graph {
 	    }
 	}
 	
-
+	
 	@SuppressWarnings("unchecked")
+	private void computeMinimalInfeasiblePathsRec(Patient p, int threshold, int count, LinkedList<LinkedList<Patient>> paths, LinkedList<Patient> current, HashSet<Patient> visited) {
+		if (count == threshold + 1) return;
+		if (visited.contains(p)) return;
+		visited.add(p);
+		current.addLast(p);
+		if (count == threshold)
+			paths.add((LinkedList<Patient>) current.clone());
+		for (Patient q: adj.get(p)) {
+				computeMinimalInfeasiblePathsRec(q, threshold, count + 1, paths, current, visited);
+		}
+		current.removeLast();
+		visited.remove(p);
+	}
+	
+
 	LinkedList<LinkedList<Patient>> computeAllMinimalInfeasiblePaths(int threshold) {
 		LinkedList<LinkedList<Patient>> paths = new LinkedList<LinkedList<Patient>>();
 		HashSet<Patient> visited = new HashSet<Patient>();
-		LinkedList<Patient> current = new LinkedList<Patient>(); // pile FIFO
-		int count = 0; // on va maintenir l'invariant de boucle count <= threshold + 1
-		for (Patient p: adj.keySet())
-			if (!visited.contains(p)) {
-				boolean go = true;
-				while (go) {
-					visited.add(p);
-					if (count >= 1 && current.getFirst() == p) {
-						// On a un cycle
-						current.clear();
-						count = 0;
-					}
-					else {
-						current.addLast(p);
-						count++;
-						if (count == threshold + 1) {
-							paths.add((LinkedList<Patient>) current.clone());
-							current.removeFirst();
-							count--;
-						}
-					}
-					if (adj.get(p).toArray().length > 0 && !visited.contains(adj.get(p).toArray()[0]))
-						p = (Patient) adj.get(p).toArray()[0];
-					else
-						go = false;
-				}
-			}
+		LinkedList<Patient> current = new LinkedList<Patient>(); // pile
+		for (Patient p: adj.keySet()) {
+			computeMinimalInfeasiblePathsRec(p, threshold, 0, paths, current, visited);
+		}
 		return paths;
 	}
 	
