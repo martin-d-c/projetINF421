@@ -1,6 +1,9 @@
 import java.io.PrintWriter;
 import java.util.LinkedList;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +14,7 @@ public class QuantitativeAnalysis {
 	static int c = 3;
 	static int n = 30;
 	static int N = 5; // number of kidney exchange problem generated
-	static double[] frequencies = {0.46,0.85,0.96};
+	static double[] frequencies = {0.46,0.85,0.96}; // cumulative frequencies  O,A,B,AB
 	public static  void generateConfiguration() throws IOException{
 		for(int i = 1;i<N+1;i++) {
 			
@@ -94,13 +97,70 @@ public class QuantitativeAnalysis {
 				}
 				
 			}
+			String bloodTypeToPrint = new String();
+			for(int k =1;k<n+1;k++) {
+				bloodTypeToPrint+= bloodType[k];
+				bloodTypeToPrint+= " ";
+			}
+			writer.println(bloodTypeToPrint);
 			writer.close();
 		}
 		
 
 	}
-	public static void main(String[] args) throws IOException{
-		generateConfiguration();
+	static int getNbTransplantations(Matching M, int[] waitingList,String[] bloodType) { //waitingList contains the number of cadaver for each bloodType  (O,A,B,AB)
+		int nbTransplantations = 0;
+		for(Patient P : M.assigned) {
+			if(P.kidney==0) {
+				if(bloodType[P.id-1].compareTo("O") ==0 && waitingList[0]>0) { nbTransplantations++; waitingList[0]--;}
+				else if(bloodType[P.id-1].compareTo("A") ==0 && waitingList[1]>0) { nbTransplantations++; waitingList[1]--;}
+				else if(bloodType[P.id-1].compareTo("B") ==0 && waitingList[2]>0) { nbTransplantations++; waitingList[2]--;}
+				else if(bloodType[P.id-1].compareTo("AB") ==0 &&waitingList[3]>0) { nbTransplantations++; waitingList[3]--;}
+			}
+			else {
+				nbTransplantations++;
+			}
+		}
+		return nbTransplantations;
+	}
+	
+	static String[] getBloodType(String path) throws IOException {
+		BufferedReader br = null;
 		
+	    try  {
+		br = new BufferedReader(new FileReader(new File(path)));
+	    }
+	    catch(FileNotFoundException exc) {
+		System.out.println("Erreur d'ouverture");
+	    }
+	    
+	    int n = Integer.parseInt(br.readLine());
+	    
+	    for(int i =0; i<n;i++) {br.readLine();}
+	    String[] bloodType = br.readLine().split(" ");
+	    br.close();
+		return bloodType;
+	}
+	
+	static int[] getTypeCadavers() {
+		int[] typeCadavers = new int[4];
+		for(int j = 0;j<c;j++) {
+			double prop = Math.random();
+			
+			if(prop<frequencies[0]) {  typeCadavers[0]++;}
+			else if(prop<frequencies[1]) {typeCadavers[1]++;}
+			else if(prop<frequencies[2]) {typeCadavers[2]++;}
+			else { typeCadavers[3]++;}
+		}
+		return typeCadavers;
+	}
+	
+	public static void main(String[] args) throws IOException{
+		
+		CyclesAndChainsMatching M = new CyclesAndChainsMatching("testfile1.txt");
+		M.match(true);
+		System.out.println(M);
+		
+		System.out.println(getNbTransplantations(M, getTypeCadavers(),getBloodType("testfile1.txt")));
 	}
 }

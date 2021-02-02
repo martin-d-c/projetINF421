@@ -42,7 +42,7 @@ public class ILPMatching extends Matching {
         	   return interRes;
            }
            boolean isInteger =true;
-           int index;
+           int index =0;
            for(Variable var:solution.getVariables()) {
         	   if(Math.round(var.getValue()) == var.getValue()) {
         		   index = Integer.parseInt(var.getName());
@@ -53,7 +53,25 @@ public class ILPMatching extends Matching {
            if(isInteger) {
         	   return interRes;
            }
-           return 1; //à finir
+           double[][] A1 = new double[A.length][A[0].length];
+           double[] b1 = new double[b.length];
+           double[] b2 = new double[b.length];
+           ConsType[] rel1 = new ConsType[rel.length +1];
+           
+           for(int i = 0;i<A.length;i++) {
+        	   for(int j =0;j<A[0].length;j++) {
+        		   A1[i][j] = A[i][j];
+        	   }
+        	   b1[i] = b[i];
+        	   b2[i] = b[i];
+        	   rel1[i]= rel[i];
+           }
+           b1[b.length-1] = 0; b2[b.length-1] = 0;
+           rel1[c.length-1] = ConsType.EQ;
+           double[] newLine = new double[A[0].length];
+           newLine[index]=1;
+           A1[A.length-1]=newLine;
+           return Math.max(branchAndBound(A1,b1,c,rel1,bound,interRes),branchAndBound(A1,b2,c,rel1,bound,interRes));
         } 
         else {
         	return interRes;
