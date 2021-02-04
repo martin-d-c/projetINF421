@@ -1,8 +1,7 @@
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.ArrayList;
-import it.ssc.log.SscLogger;
 import it.ssc.pl.milp.ConsType;
 import it.ssc.pl.milp.Constraint;
 import it.ssc.pl.milp.GoalType;
@@ -14,6 +13,7 @@ import it.ssc.pl.milp.Variable;
 public class ILPMatching extends Matching {
 	
 	DirectedCompatibilityGraph graph;
+	Solution solutionILP;
 	
 	public ILPMatching(String path) throws IOException {
 		graph = new DirectedCompatibilityGraph(path);
@@ -51,6 +51,7 @@ public class ILPMatching extends Matching {
         	   }
            }
            if(isInteger) {
+        	   this.solutionILP = solution;
         	   return interRes;
            }
            double[][] A1 = new double[A.length][A[0].length];
@@ -76,5 +77,9 @@ public class ILPMatching extends Matching {
         else {
         	return interRes;
         }
+	}
+	HashSet<Patient> match(){
+		LinkedList<LinkedList<Integer>> infeasiblePaths = this.graph.toInt(this.graph.computeAllMinimalInfeasiblePaths(this.graph.K));
+		return this.assigned;
 	}
 }
