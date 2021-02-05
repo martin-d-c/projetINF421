@@ -79,7 +79,7 @@ public class ILPMatching extends Matching {
         }
 	}
 	HashSet<Patient> match(){
-		LinkedList<LinkedList<Integer>> infeasiblePaths = this.graph.toInt(this.graph.computeAllMinimalInfeasiblePaths(this.graph.K));
+		LinkedList<LinkedList<Integer>> infeasiblePaths = this.graph.toId(this.graph.computeAllMinimalInfeasiblePaths(this.graph.K));
 		return this.assigned;
 	}
 }

@@ -27,7 +27,7 @@ public class Test {
 		System.out.println("Minimum infeasible paths");
 		DirectedCompatibilityGraph graph = new DirectedCompatibilityGraph("test1.txt");
 		LinkedList<LinkedList<Patient>> paths = graph.computeAllMinimalInfeasiblePaths(3);
-		System.out.println(DirectedCompatibilityGraph.toInt(paths));
+		System.out.println(DirectedCompatibilityGraph.toId(paths));
 	}
 
 }
