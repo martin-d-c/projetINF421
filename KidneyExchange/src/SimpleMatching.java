@@ -32,6 +32,8 @@ public class SimpleMatching extends Matching {
 	}
 	
 	HashSet<Patient> greedyMatching() {
+		
+		// Initialization
 		Patient[] T = new Patient[this.nbNotAssigned];
 		int j = 0;
 		for(Patient P : this.notAssigned) {
@@ -41,27 +43,24 @@ public class SimpleMatching extends Matching {
 		}
 		Arrays.sort(T);
 		
+		// Assigning the preferred kidneys
 		for (int i = 0; i < T.length; i++) {
-			
-			
-			Patient preferedPatient = T[i]; 
+			Patient preferredPatient = T[i]; 
 			if(!T[i].isAssigned) {
-				
-				for (Patient P2 : this.graph.adj.get(T[i])) {
-					
-					if (T[i].K[P2.id] && T[i].P[P2.id] < T[i].P[preferedPatient.id] && !P2.isAssigned) {
-						preferedPatient = P2;
-						}
-					}
-				
-				if (preferedPatient !=T[i]) {
-					this.assign(T[i], preferedPatient.id);
-					this.assign( preferedPatient, T[i].id);
-					this.graph.removeEdge(T[i], preferedPatient);
-					
+				// Looking for the preferred kidney of T[i]
+				for (Patient P2 : this.graph.adj.get(T[i]))
+					if (T[i].K[P2.id] && T[i].P[P2.id] < T[i].P[preferredPatient.id] && !P2.isAssigned)
+						preferredPatient = P2;
+				// Assignment
+				if (preferredPatient != T[i]) {
+					this.assign(T[i], preferredPatient.id);
+					this.assign(preferredPatient, T[i].id);
+					this.graph.removeEdge(T[i], preferredPatient);
+					// POURQUOI PAS DANS L'AUTRE SENS ???
 				}
 			}
 		}
+		
 		@SuppressWarnings("unchecked")
 		HashSet<Patient> notAssignedCopy = (HashSet<Patient>)this.notAssigned.clone();
 		for (Patient P : notAssignedCopy) {

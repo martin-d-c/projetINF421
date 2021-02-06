@@ -3,7 +3,7 @@ import java.util.LinkedList;
 
 public class Test {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, Exception {
 		System.out.println("Direct Donation");
 		SimpleMatching test1 = new SimpleMatching("testPrimaire.txt");
 		test1.directDonation();
@@ -28,6 +28,11 @@ public class Test {
 		DirectedCompatibilityGraph graph = new DirectedCompatibilityGraph("test1.txt");
 		LinkedList<LinkedList<Patient>> paths = graph.computeAllMinimalInfeasiblePaths(3);
 		System.out.println(DirectedCompatibilityGraph.toId(paths));
+		
+		System.out.println("ILP Matching");
+		ILPMatching test5 = new ILPMatching("test1.txt");
+		test5.match();
+		System.out.println(test5);
 	}
 
 }
