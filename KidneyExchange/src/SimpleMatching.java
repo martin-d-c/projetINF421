@@ -20,13 +20,12 @@ public class SimpleMatching extends Matching {
 	}
 	
 	HashSet<Patient> directDonation() {
-		@SuppressWarnings("unchecked")
-		HashSet<Patient> notAssignedCopy = (HashSet<Patient>) this.notAssigned.clone();
+		HashSet<Patient> notAssignedCopy = new HashSet<Patient>(notAssigned);
 		for (Patient P : notAssignedCopy) {
 			if(P.isCompatible(P.kidney))
-				assign(P); // On assigne ki à ti
+				assign(P); // assigning ki to ti
 			else
-				assign(P, 0); // Liste d'attente
+				assign(P, 0); // waiting list
 		}
 		return assigned;
 	}
@@ -56,13 +55,12 @@ public class SimpleMatching extends Matching {
 					this.assign(T[i], preferredPatient.id);
 					this.assign(preferredPatient, T[i].id);
 					this.graph.removeEdge(T[i], preferredPatient);
-					// POURQUOI PAS DANS L'AUTRE SENS ???
+					this.graph.removeEdge(preferredPatient, T[i]); // Ajouté, ne change pas le résultat final...
 				}
 			}
 		}
 		
-		@SuppressWarnings("unchecked")
-		HashSet<Patient> notAssignedCopy = (HashSet<Patient>)this.notAssigned.clone();
+		HashSet<Patient> notAssignedCopy = new HashSet<Patient>(notAssigned);
 		for (Patient P : notAssignedCopy) {
 			if (P.K[P.id]) {
 				this.assign(P);

@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.io.*;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 public class AssignationGraph extends Graph {
 	
@@ -43,16 +44,16 @@ public class AssignationGraph extends Graph {
 	}
 	
 	// HYPOTHESE : il n'y a pas de cycle dans le graphe
-	// A OPTIMISER : stocker les distances des visited
-	int[] chainSizeAndPriority(Patient p, HashSet<Patient> visited) {
-		int[] res = new int[] {1, p.id}; // size, priority
+	// A OPTIMISER : stocker les distances et priorités des visited
+	LinkedList<Integer> chainSizeAndPriority(Patient p, HashSet<Patient> visited) {
+		LinkedList<Integer> res = new LinkedList<Integer>(); // size, priority
+		res.add(1);
 		visited.add(p);
 		while(p.kidney != 0) { // termine par hypothèse
 			p = (Patient) this.adj.get(p).toArray()[0];
 			visited.add(p);
-			res[0]++;
-			if (p.id < res[1])
-				res[1] = p.id;
+			res.addFirst(res.pollFirst() + 1);
+			res.add(p.id);
 		}
 		return res;
 	}

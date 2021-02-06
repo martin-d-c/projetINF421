@@ -1,6 +1,8 @@
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 public class CyclesAndChainsMatching extends Matching {
 	
@@ -32,25 +34,17 @@ public class CyclesAndChainsMatching extends Matching {
 	
 	
 	HashSet<Patient> match(boolean ruleB) {
-		// 1er tour
-		for (Patient p: notAssigned) {
-			int fav = 0;
-			int priority = p.P[0];
-			for (int i = 1; i < n+1; i++)
-				if (p.P[i] < priority && this.kidneyAvailable[i] == true) {
-					fav = i;
-					priority = p.P[i];
-				}
-			p.kidney = fav;
-			graph.addEdge(p, patientsById.get(fav));
-		}
+		
+		boolean firstRound = true;
 		
 		while (!notAssigned.isEmpty()) {
 			
 			for (Patient p: notAssigned) {
-				if (!this.kidneyAvailable[p.kidney]) {
+				// 1st round: each patient has to point towards his most preferred kidney
+				// Other rounds: changing only if current preferred kidney not available
+				if (!this.kidneyAvailable[p.kidney] || firstRound) {
 					graph.removeEdge(p, patientsById.get(p.kidney));
-					// Là il faut trouver un moyen efficace de trouver son kidney préféré encore disponible
+					// Finding p's most preferred kidney which is still available
 					int fav = 0;
 					int priority = p.P[0];
 					for (int i = 1; i < n+1; i++)
@@ -62,9 +56,10 @@ public class CyclesAndChainsMatching extends Matching {
 					graph.addEdge(p, patientsById.get(fav));
 				}
 			}
+			firstRound = false;
 			
 			Patient cycle = graph.getCycle();
-			if (cycle != null) {
+			if (cycle != null) { // Cycle: assign
 				Patient p = (Patient) graph.adj.get(cycle).toArray()[0];
 				Patient pred = cycle;
 				while (p != cycle) {
@@ -78,7 +73,7 @@ public class CyclesAndChainsMatching extends Matching {
 				this.kidneyAvailable[p.kidney] = false;
 				graph.removeEdge(pred, p);
 			}
-			else {
+			else { // No cycle: looking for the right w-chain according to the selected rule
 				Patient tail;
 				if (ruleB) tail = selectChainRuleB();
 				else tail = selectChainRuleA();
@@ -87,7 +82,7 @@ public class CyclesAndChainsMatching extends Matching {
 					this.kidneyAvailable[tail.kidney] = false;
 					tail = (Patient) graph.adj.get(tail).toArray()[0];
 				}
-				assign(tail); // le dernier qui pointe sur w
+				assign(tail); // assign the last one, which points towards 0 (w-chain)
 			}
 		}
 		return this.assigned;
@@ -95,31 +90,51 @@ public class CyclesAndChainsMatching extends Matching {
 	
 	
 	Patient selectChainRuleA() {
-		HashSet<Patient> visited = new HashSet<Patient>(); // size en O(1)
-		HashMap<Integer, Patient> patients = new HashMap<Integer, Patient>(); // size en O(1)
+		HashSet<Patient> visited = new HashSet<Patient>(); // size -> O(1)
+		// patients: {(highest_priority_in_the_w-chain, tail_of_the_w-chain)}
+		HashMap<Patient, LinkedList<Integer>> patients = new HashMap<Patient, LinkedList<Integer>>(); // size -> O(1)
 		int d_max = 0;
 		if (notAssigned.isEmpty()) return null;
 		for (Patient p: notAssigned)
 			if (!visited.contains(p)) {
-				int[] dp = graph.chainSizeAndPriority(p, visited);
-				int d = dp[0];
-				int priority = dp[1];
+				LinkedList<Integer> dp = graph.chainSizeAndPriority(p, visited);
+				int d = dp.poll();
+				LinkedList<Integer> priority = dp; // List of priorities of all the elements of the w-chain
 				if (d > d_max) {
 					d_max = d;
 					patients.clear();
-					patients.put(priority, p);
+					patients.put(p, priority);
 				}
 				else if (d == d_max)
-					patients.put(priority, p);
+					patients.put(p, priority);
 			}
-		// Sélection de la w-chain parmi les plus longues
+		// Selecting the w-chain among the longest
 		if (patients.size() == 1)
-			return (Patient) patients.values().toArray()[0];
-		for (int i = 1;;i++) {
-			Patient p = patients.get(i);
-			if (p != null)
-				return p;
+			return (Patient) patients.keySet().toArray()[0];
+		for (Patient p: patients.keySet())
+			Collections.sort(patients.get(p));
+		LinkedList<Patient> candidates = new LinkedList<Patient>(patients.keySet()); // size en O(1)
+		LinkedList<Patient> new_candidates = new LinkedList<Patient>();
+		
+		// Looking for the candidate containing the highest(s) priority patients
+		while (candidates.size() > 1) {
+			int min_prio = n + 1;
+			for (Patient p: candidates) {
+				Integer prio = patients.get(p).poll();
+				if (prio == null) continue; // This should not happen since all candidates have the same length
+				if (prio < min_prio) {
+					min_prio = prio;
+					new_candidates.clear();
+					new_candidates.add(p);
+				}
+				else if (prio == min_prio) {
+					new_candidates.add(p);
+				}
+			}
+			candidates = new_candidates;
+			new_candidates = new LinkedList<Patient>();
 		}
+		return candidates.element();
 	}
 	
 	Patient selectChainRuleB() {
