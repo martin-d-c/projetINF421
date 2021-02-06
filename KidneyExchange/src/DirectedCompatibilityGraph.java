@@ -11,7 +11,7 @@ public class DirectedCompatibilityGraph extends Graph {
 	
 	int K; // threshold
 	int[][] adjMatrix ;
-	
+
 	DirectedCompatibilityGraph() {
 		this.adj = new HashMap<Patient,HashSet<Patient>>();
 		this.n = 0;
@@ -30,7 +30,7 @@ public class DirectedCompatibilityGraph extends Graph {
 	    this.n =(int) Double.parseDouble(br.readLine());
 
 	    this.K = (int) Double.parseDouble(br.readLine());
-	    int[][] adjMatrix = new int[n+1][n+1];
+	    
 	    this.adjMatrix = new int[n+1][n+1];
 	    for(int i =1; i<n+1;i++) {
 	    	String[] ligne = br.readLine().split("   ");

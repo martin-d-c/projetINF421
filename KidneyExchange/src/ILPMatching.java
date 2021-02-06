@@ -10,6 +10,8 @@ import it.ssc.pl.milp.LinearObjectiveFunction;
 import it.ssc.pl.milp.Solution;
 import it.ssc.pl.milp.SolutionType;
 import it.ssc.pl.milp.Variable;
+
+
 public class ILPMatching extends Matching {
 	
 	DirectedCompatibilityGraph graph;
@@ -21,10 +23,11 @@ public class ILPMatching extends Matching {
 		this.nbNotAssigned = graph.n;
 		this.notAssigned = graph.getVertices();
 	}
-
+	
 	int branchAndBound(double[][] A,double[] b,double[]c,ConsType[] rel,double bound, int interRes) throws Exception {
-		LinearObjectiveFunction fo = new LinearObjectiveFunction(c, GoalType.MAX);
-		 
+		
+        LinearObjectiveFunction fo = new LinearObjectiveFunction(c, GoalType.MAX);
+ 
         ArrayList< Constraint > constraints = new ArrayList< Constraint >();
         for(int i=0; i < A.length; i++) {
             constraints.add(new Constraint(A[i], rel[i], b[i]));
@@ -79,14 +82,13 @@ public class ILPMatching extends Matching {
         	return interRes;
         }
 	}
-	
 	HashSet<Patient> match()  throws Exception{
 		LinkedList<LinkedList<Integer>> infeasiblePaths = DirectedCompatibilityGraph.toId(this.graph.computeAllMinimalInfeasiblePaths(this.graph.K));
 		int p = infeasiblePaths.size()+2*n;
-
+		
 		double[] c = new double[n*n];
 		for(int i = 0;i< (n*n);i++) { c[i] = 1; }
-
+		
 		double[][] A = new double[p][n*n];
 		double[] b = new double[p];
 		ConsType[] rel = new ConsType[p];
@@ -111,7 +113,7 @@ public class ILPMatching extends Matching {
 			}
 			k++;
 		}
-
+		
 		branchAndBound(A,b,c,rel,Double.POSITIVE_INFINITY,0);
 		int i=1,j =1;
 		for(Variable var : solutionILP.getVariables()) {
@@ -120,7 +122,7 @@ public class ILPMatching extends Matching {
 				P.assign(i);
 				this.assigned.add(P);
 			}
-
+			
 			if(j==n) {i++;j=1;}
 			else {j++;}
 		}
