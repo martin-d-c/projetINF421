@@ -17,24 +17,27 @@ public class ILPMatching extends Matching {
 	
 	DirectedCompatibilityGraph graph;
 	Solution solutionILP;
-	
+	HashMap<Integer, Patient> patientsById;
 	public ILPMatching(String path) throws IOException {
 		graph = new DirectedCompatibilityGraph(path);
 		this.n = graph.n;
 		this.nbNotAssigned = graph.n;
 		this.notAssigned = graph.getVertices();
 		this.assigned = new HashSet<Patient>();
+		patientsById = new HashMap<Integer, Patient>();
+		for (Patient p: notAssigned) {
+			patientsById.put(p.id, p);
+		}
 	}
 	
 	int branchAndBound(double[][] A,double[] b,double[]c,ConsType[] rel,double bound, int interRes) throws Exception {
-		
         LinearObjectiveFunction fo = new LinearObjectiveFunction(c, GoalType.MAX);
  
         ArrayList< Constraint > constraints = new ArrayList< Constraint >();
         for(int i=0; i < A.length; i++) {
             constraints.add(new Constraint(A[i], rel[i], b[i]));
         }
- 
+        
         LP lp = new LP(fo,constraints); 
         SolutionType solution_type=lp.resolve();
         
@@ -157,14 +160,23 @@ public class ILPMatching extends Matching {
 			if(var.getValue() ==1) {
 				int i = listEdges[numVariable][0];
 				int j = listEdges[numVariable][1];
-				Patient P = new Patient(j,new boolean[n],new int [n]);
-				assign(P,i);
+				
+				this.assign(this.patientsById.get(j),i);
+				
 				assignedKidneys.add(i);
 			}
 			
 			numVariable++;
 		}
-		
+		HashSet<Patient> notAssignedCopy = new HashSet<Patient>(notAssigned);
+		for(Patient P : notAssignedCopy) {
+			if(this.graph.adjMatrix[P.id][P.id] == 1 && !assignedKidneys.contains(P.id)) {
+				assign(P,P.id);
+			}
+			else {
+				assign(P,0);
+			}
+		}
 		return this.assigned;
 	}
 }
