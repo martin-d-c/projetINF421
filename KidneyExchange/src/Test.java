@@ -3,7 +3,7 @@ import java.util.LinkedList;
 
 public class Test {
 
-	public static void main(String[] args) throws IOException,Exception {
+	public static void main(String[] args) throws IOException, Exception {
 		System.out.println("Direct Donation");
 		SimpleMatching test1 = new SimpleMatching("testPrimaire.txt");
 		test1.directDonation();

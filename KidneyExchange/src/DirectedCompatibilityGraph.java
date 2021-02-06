@@ -8,8 +8,10 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class DirectedCompatibilityGraph extends Graph {
+	
 	int K; // threshold
 	int[][] adjMatrix ;
+
 	DirectedCompatibilityGraph() {
 		this.adj = new HashMap<Patient,HashSet<Patient>>();
 		this.n = 0;
@@ -26,8 +28,9 @@ public class DirectedCompatibilityGraph extends Graph {
 		System.out.println("Erreur d'ouverture");
 	    }
 	    this.n =(int) Double.parseDouble(br.readLine());
-	    
+
 	    this.K = (int) Double.parseDouble(br.readLine());
+	    
 	    this.adjMatrix = new int[n+1][n+1];
 	    for(int i =1; i<n+1;i++) {
 	    	String[] ligne = br.readLine().split("   ");
