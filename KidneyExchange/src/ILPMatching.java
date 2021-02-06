@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ public class ILPMatching extends Matching {
  
         LP lp = new LP(fo,constraints); 
         SolutionType solution_type=lp.resolve();
+        
+        
         
         if(solution_type==SolutionType.OPTIMUM) { 
             Solution solution=lp.getSolution();
@@ -77,6 +80,7 @@ public class ILPMatching extends Matching {
            return Math.max(branchAndBound(A1,b1,c,rel1,bound,interRes),branchAndBound(A1,b2,c,rel1,bound,interRes));
         } 
         else {
+        	
         	return interRes;
         }
 	}
@@ -84,33 +88,56 @@ public class ILPMatching extends Matching {
 		LinkedList<LinkedList<Integer>> infeasiblePaths = DirectedCompatibilityGraph.toId(this.graph.computeAllMinimalInfeasiblePaths(this.graph.K));
 		int p = infeasiblePaths.size()+2*n;
 		
-		double[] c = new double[n*n];
-		for(int i = 0;i< (n*n);i++) { c[i] = 1; }
+		int nbEdges = 0;
+		for(int[] ligne : this.graph.adjMatrix) { for(int i :ligne) { if(i==1) {nbEdges++;} }}
+		int[][] listEdges = new int[nbEdges][2];
+		HashMap<int[],Integer> edges = new HashMap<int[],Integer>();
+		int k=0;
+		for(int i =1;i<n+1;i++) {
+			for(int j =1;j<n+1;j++) {
+				if(this.graph.adjMatrix[i][j] ==1) {
+					listEdges[k][0] = i;
+					listEdges[k][1] = j;
+					edges.put(listEdges[k], k);
+					k++;
+				}
+			}
+		}
 		
-		double[][] A = new double[p][n*n];
+		double[] c = new double[nbEdges];
+		for(int i = 0;i< nbEdges;i++) { c[i] = 1; }
+		
+		double[][] A = new double[p][nbEdges];
 		double[] b = new double[p];
 		ConsType[] rel = new ConsType[p];
-		for(int i =1;i<n+1;i++) { 
-			for(int j =1;j<n+1;j++) {
-				if(this.graph.adjMatrix[i][j] ==1) { A[i-1][n*(i-1)+j-1] =1; A[n+j-1][n*(i-1)+j-1]=1;}
+		for(int i =1;i<n+1;i++) {
+			int numVariable = 0;
+			for(int[] edge : listEdges) {
+				if(edge[0] ==i) {A[i-1][numVariable] = 1;}
+				if(edge[1]==i) {A[n+i-1][numVariable]=1; }
+				numVariable++;
 			}
 			b[i-1]=1;
 			b[n+i-1]=1;
 			rel[i-1]=ConsType.LE;
 			rel[n+i-1]=ConsType.LE;
 		}
-		int k = 0;
+		k = 0;
+		
 		for(LinkedList<Integer> L : infeasiblePaths) {
 			b[2*n+k] = this.graph.K;
 			rel[2*n+k] = ConsType.LE;
 			int prev = L.getFirst();
 			L.removeFirst();
 			for(int i :L) {
-				A[k+2*n][n*(prev-1)+i-1] =1;
+				int[] edge = {prev,i};
+				int numVariable = edges.get(edge);
+				A[k+2*n][numVariable] =1;
 				prev=i;
 			}
 			k++;
 		}
+		
 		
 		branchAndBound(A,b,c,rel,Double.POSITIVE_INFINITY,0);
 		int i=1,j =1;

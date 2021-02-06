@@ -33,11 +33,14 @@ public class DirectedCompatibilityGraph extends Graph {
 	    	String[] ligne = br.readLine().split("   ");
 	    	
 	    	
-	    	for(int j = 0;j<ligne.length;j++) {
-	    		adjMatrix[i][j] = (int)Double.parseDouble(ligne[j]);
+	    	for(int j = 1;j<ligne.length+1;j++) {
+	    		
+	    		adjMatrix[i][j] = (int)Double.parseDouble(ligne[j-1]);
+	    		
 	    	}
+	    	
 	    }
-	    for(int i =1; i<n;i++) {
+	    for(int i =1; i<n+1;i++) {
 	    	
 	    	boolean[] K = new boolean[n+1];
 	    	int[] P = new int[n+1];
@@ -50,7 +53,7 @@ public class DirectedCompatibilityGraph extends Graph {
 	    		
 	    		
 	    	}
-	    	addPatient(new Patient(i+1,K,P));
+	    	addPatient(new Patient(i,K,P));
 	    }
 	    br.close();
 		for(Patient p: adj.keySet()) {
