@@ -3,11 +3,10 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class DirectDonationMatching extends Matching {
+	/*
+	 * Matching class to perform Direct Donation Algorithm.
+	 * */
 	
-	public DirectDonationMatching(HashSet<Patient> T) {
-		super(T);
-		graph = new CompatibilityGraph();
-	}
 	
 	public DirectDonationMatching(String path) throws IOException {
 		graph = new CompatibilityGraph(path);

@@ -3,11 +3,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public class GreedyMatching extends Matching {
-	
-	GreedyMatching(HashSet<Patient> T) {
-		super(T);
-		graph = new CompatibilityGraph();
-	}
+	/*
+	 * Matching class to perform Greedy Matching.
+	 * */
+
 
 	GreedyMatching(String path) throws IOException {
 		graph = new CompatibilityGraph(path);

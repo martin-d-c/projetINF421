@@ -1,15 +1,16 @@
 import java.io.*;
 
 public class AssignationGraph extends Graph {
-	
-	// directed graph => adj contains reachable vertices
+	/*
+	 * Represents a directed graph adapted for CyclesAndChainsMatching.
+	 * */
 	
 	
 	public AssignationGraph() {
 		super();
 	}
 	
-	// create a graph without edges
+	// Creates a graph without edges
 	AssignationGraph(String path) throws IOException {
 		readFile(path);
 	}

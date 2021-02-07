@@ -5,6 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 public abstract class Matching {
+	/*
+	 * Mother class of all Matching classes.
+	 * */
 	
 	int n;
 	int nbNotAssigned;
@@ -19,13 +22,7 @@ public abstract class Matching {
 		notAssigned = new HashSet<Patient>();
 	}
 	
-	Matching(HashSet<Patient> T) {
-		this.assigned = new HashSet<Patient>();
-		this.notAssigned = new HashSet<Patient>(T);
-		this.n = T.size();
-		this.nbNotAssigned = n;
-	}
-		
+
 	public abstract void runDirectDonation();
 	
 	public abstract void match() throws Exception;

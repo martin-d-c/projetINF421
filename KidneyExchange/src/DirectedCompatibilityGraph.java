@@ -8,6 +8,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class DirectedCompatibilityGraph extends Graph {
+	/*
+	 * Represents a directed graph adapted for ILPMatching.
+	 * */
 	
 	int K; // threshold
 	int[][] adjMatrix ;

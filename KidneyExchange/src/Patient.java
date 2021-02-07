@@ -1,5 +1,9 @@
 
 public class Patient implements Comparable<Patient> {
+	/*
+	 * Represents a patient.
+	 * */
+	
 	final int id; //égal à la priorité du patient, on l'appelle id car la priorité a peu de sens pour le kidney associé; le patient 1 est le premier de la liste de priorité
 	boolean isAssigned;
 	int kidney; //0 si waiting list, >0 : kidney associé

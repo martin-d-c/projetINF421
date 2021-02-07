@@ -5,10 +5,11 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-//import sun.java2d.pipe.SpanShapeRenderer.Simple;
 
 public class QuantitativeAnalysis {
-
+	/*
+	 * Generates random configurations and performs an analysis of the algorithms performed on these configurations. 
+	 * */
 	
 	static int c = 3;
 	static int n = 30;
@@ -46,7 +47,7 @@ public class QuantitativeAnalysis {
 				else {bloodType[j] = "AB";ABCompatible.add(j);}
 			}
 			
-			PrintWriter writer = new PrintWriter(new File("testfile"+i+".txt"));
+			PrintWriter writer = new PrintWriter(new File("config"+i+".txt"));
 			writer.println(n);
 			
 			for(int j = 1;j<n+1;j++) {
@@ -86,7 +87,7 @@ public class QuantitativeAnalysis {
 		
 		generateConfiguration();
 		
-		PrintWriter writer = new PrintWriter(new File("results.txt"));
+		PrintWriter writer = new PrintWriter(new File("quantitative_analysis.txt"));
 		writer.print("DirectDonation Greedy CyclesAndChains  GreedyWithPreprocessing CyclesAndChainsWithPreprocessing");
 		writer.println();
 		
@@ -96,7 +97,7 @@ public class QuantitativeAnalysis {
 		
 		for (int i = 0; i < N; i++) {
 			int[] waitingList = generateCadavers();
-			String path = "testfile" + (i+1) + ".txt";
+			String path = "config" + (i+1) + ".txt";
 			
 			matchings[0][i] = new DirectDonationMatching(path);
 			matchings[0][i].match();

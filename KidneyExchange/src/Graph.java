@@ -9,6 +9,9 @@ import java.util.HashMap;
 
 
 public abstract class Graph {
+	/*
+	 * Represents a graph which vertices'type is Patient.
+	 * */
 	
 	HashMap<Patient,HashSet<Patient>> adj;
 	HashMap<Integer, Patient> patientsById;
@@ -47,9 +50,12 @@ public abstract class Graph {
 	    	}
 	    	addPatient(new Patient(i+1,K,P));
 	    }
-	    String[] bloodType = br.readLine().split(" ");
-	    for (Patient p: adj.keySet())
-	    	p.bloodType = bloodType[p.id-1];
+	    String lastLine = br.readLine();
+	    if (lastLine != null) {
+		    String[] bloodType = lastLine.split(" ");
+		    for (Patient p: adj.keySet())
+		    	p.bloodType = bloodType[p.id-1];
+	    }
 	    br.close();
 	}
 	

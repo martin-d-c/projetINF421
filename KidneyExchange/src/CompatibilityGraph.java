@@ -1,9 +1,11 @@
 import java.io.IOException;
 
 public class CompatibilityGraph extends Graph {
+	/*
+	 * Represents an undirected graph adapted for GreedyMatching: p and q connected iff compatible
+	 * */
 	
-	// undirected graph : p and q connected iff compatible
-	
+
 	public CompatibilityGraph() {
 		super();
 	}

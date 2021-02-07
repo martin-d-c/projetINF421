@@ -5,19 +5,14 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class CyclesAndChainsMatching extends Matching {
+	/*
+	 * Matching class to perform Cycles and CHains Matching Algorithm.
+	 * */
 
 	boolean[] kidneyAvailable;
 	HashMap<Integer, Patient> patientsById;
 	boolean ruleB; // true in all constructors, should be modified later if rule A wanted
 	
-	CyclesAndChainsMatching(HashSet<Patient> T) {
-		super(T);
-		graph = new AssignationGraph();
-		kidneyAvailable = new boolean[this.n+1];
-		for (int i = 1; i < n+1; i++) kidneyAvailable[i] = true;
-		patientsById = graph.patientsById;
-		ruleB = true;
-	}
 	
 	public CyclesAndChainsMatching(String path) throws IOException {
 		graph = new AssignationGraph(path);

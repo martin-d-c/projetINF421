@@ -14,6 +14,9 @@ import it.ssc.pl.milp.Variable;
 
 
 public class ILPMatching extends Matching {
+	/*
+	 * Matching class to perform Branch-and-Bound.
+	 * */
 	
 	DirectedCompatibilityGraph graph;
 	Solution solutionILP;
