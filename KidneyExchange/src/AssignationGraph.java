@@ -1,17 +1,17 @@
-import java.util.HashMap;
 import java.io.*;
-import java.util.HashSet;
-import java.util.LinkedList;
 
 public class AssignationGraph extends Graph {
 	
 	// directed graph => adj contains reachable vertices
 	
-	AssignationGraph() {
-		this.adj = new HashMap<Patient,HashSet<Patient>>();
-		this.n = 0;
+	
+	public AssignationGraph() {
+		super();
 	}
 	
+	public AssignationGraph(Graph g) {
+		super(g);
+	}
 	
 	// create a graph without edges
 	AssignationGraph(String path) throws IOException {
@@ -20,7 +20,7 @@ public class AssignationGraph extends Graph {
 	
 	
 	
-	Patient getCycle(){
+	/*Patient getCycle(){
 		HashSet<Patient> visited = new HashSet<Patient>();
 		HashSet<Patient> visitedCycle = new HashSet<Patient>();
 		for (Patient P : this.adj.keySet()) {
@@ -41,9 +41,9 @@ public class AssignationGraph extends Graph {
 			}
 		}
 		return null;
-	}
+	}*/
 	
-	// HYPOTHESE : il n'y a pas de cycle dans le graphe
+	/*// HYPOTHESE : il n'y a pas de cycle dans le graphe
 	// A OPTIMISER : stocker les distances et priorités des visited
 	LinkedList<Integer> chainSizeAndPriority(Patient p, HashSet<Patient> visited) {
 		LinkedList<Integer> res = new LinkedList<Integer>(); // size, priority
@@ -56,5 +56,5 @@ public class AssignationGraph extends Graph {
 			res.add(p.id);
 		}
 		return res;
-	}
+	}*/
 }

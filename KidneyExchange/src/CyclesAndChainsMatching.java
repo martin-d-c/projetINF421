@@ -5,17 +5,35 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class CyclesAndChainsMatching extends Matching {
-	
-	AssignationGraph graph;
+
 	boolean[] kidneyAvailable;
 	HashMap<Integer, Patient> patientsById;
+	boolean ruleB; // true in all constructors, should be modified later if rule A wanted
 	
-	CyclesAndChainsMatching(Patient[] T) {
+	CyclesAndChainsMatching(HashSet<Patient> T) {
 		super(T);
 		graph = new AssignationGraph();
 		kidneyAvailable = new boolean[this.n+1];
 		for (int i = 1; i < n+1; i++) kidneyAvailable[i] = true;
 		patientsById = new HashMap<Integer, Patient>();
+		ruleB = true;
+	}
+	
+	public CyclesAndChainsMatching(Matching M) {
+		super(M);
+		graph = new AssignationGraph(M.graph);
+		graph.removeAllEdges();
+		kidneyAvailable = new boolean[this.n+1];
+		for (int i = 1; i < n+1; i++) kidneyAvailable[i] = true;
+		patientsById = new HashMap<Integer, Patient>();
+		for (Patient p: assigned) {
+			kidneyAvailable[p.kidney] = false;
+			patientsById.put(p.id, p);
+		}
+		for (Patient p: notAssigned)
+			patientsById.put(p.id, p);
+		ruleB = true;
+		this.cancelWaitingList();
 	}
 	
 	public CyclesAndChainsMatching(String path) throws IOException {
@@ -30,10 +48,21 @@ public class CyclesAndChainsMatching extends Matching {
 		for (Patient p: notAssigned) {
 			patientsById.put(p.id, p);
 		}
+		ruleB = true;
+	}
+	
+	void cancelWaitingList() {
+		for (Patient p: new LinkedList<Patient>(assigned))
+			if (p.kidney == 0) {
+				assigned.remove(p);
+				notAssigned.add(p);
+				nbNotAssigned++;
+				p.isAssigned = false;
+			}
 	}
 	
 	
-	HashSet<Patient> match(boolean ruleB) {
+	public void match() {
 		
 		boolean firstRound = true;
 		
@@ -85,7 +114,6 @@ public class CyclesAndChainsMatching extends Matching {
 				assign(tail); // assign the last one, which points towards 0 (w-chain)
 			}
 		}
-		return this.assigned;
 	}
 	
 	

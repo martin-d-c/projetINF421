@@ -3,7 +3,7 @@ import java.util.LinkedList;
 
 public class Test {
 
-	public static void main(String[] args) throws IOException, Exception {
+	public static void main(String[] args) throws IOException,Exception {
 		System.out.println("Direct Donation");
 		SimpleMatching test1 = new SimpleMatching("testPrimaire.txt");
 		test1.directDonation();
@@ -16,12 +16,13 @@ public class Test {
 		
 		System.out.println("Cycles and Chains Matching - Rule A");
 		CyclesAndChainsMatching test3 = new CyclesAndChainsMatching("testPrimaire.txt");
-		test3.match(false);
+		test3.ruleB = false;
+		test3.match();
 		System.out.println(test3);
 		
 		System.out.println("Cycles and Chains Matching - Rule B");
 		CyclesAndChainsMatching test4 = new CyclesAndChainsMatching("testPrimaire.txt");
-		test4.match(true);
+		test4.match();
 		System.out.println(test4);
 		
 		System.out.println("Minimum infeasible paths");
