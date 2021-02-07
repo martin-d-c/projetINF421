@@ -25,23 +25,11 @@ public abstract class Matching {
 		this.n = T.size();
 		this.nbNotAssigned = n;
 	}
-	
-	abstract void cancelWaitingList();
-	
+		
 	public abstract void runDirectDonation();
 	
 	public abstract void match() throws Exception;
 	
-	Matching(Matching M) {
-		this.assigned = new HashSet<Patient>();
-		for (Patient p: M.assigned)
-			this.assigned.add(new Patient(p));
-		this.notAssigned = new HashSet<Patient>();
-		for (Patient p: M.notAssigned)
-			this.notAssigned.add(new Patient(p));
-		this.n = M.n;
-		this.nbNotAssigned = M.nbNotAssigned;
-	}
 	
 	void assign(Patient P,int i){
 		notAssigned.remove(P);

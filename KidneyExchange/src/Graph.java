@@ -20,22 +20,6 @@ public abstract class Graph {
 		this.n = 0;
 	}
 	
-	Graph(Graph g) { // creates a copy of g
-		this.adj = new HashMap<Patient,HashSet<Patient>>();
-		this.patientsById = new HashMap<Integer, Patient>();
-		if (g == null) {
-			this.n = 0;
-			return;
-		}
-		for (Patient p: g.adj.keySet())
-			addPatient(new Patient(p));
-		for (Patient p: adj.keySet()) 
-			for (Patient q: adj.keySet())
-				if (g.hasEdge(g.patientsById.get(p.id), g.patientsById.get(q.id)))
-					addEdge(p, q);
-		this.n = g.n;
-	}
-	
 	void readFile(String path) throws IOException {
 		this.adj = new HashMap<Patient,HashSet<Patient>>();
 		BufferedReader br = null;

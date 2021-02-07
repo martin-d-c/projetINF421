@@ -117,17 +117,6 @@ public class QuantitativeAnalysis {
 			writer.print(tp + "  ");
 			
 			// With Direct Donation as preprocessing
-			/*matchings[3][i] = new GreedyMatching(matchings[0][i]);
-			matchings[3][i].match();
-			tp = matchings[3][i].getNbTransplantations(waitingList);
-			sum[3] += tp;
-			writer.print(tp + " ");
-			
-			matchings[4][i] = new CyclesAndChainsMatching(matchings[0][i]);
-			matchings[4][i].match();
-			tp = matchings[4][i].getNbTransplantations(waitingList);
-			sum[4] += tp;
-			writer.print(tp + " ");*/
 			matchings[3][i] = new GreedyMatching(path);
 			matchings[3][i].runDirectDonation();
 			matchings[3][i].match();
@@ -140,7 +129,7 @@ public class QuantitativeAnalysis {
 			matchings[4][i].match();
 			tp = matchings[4][i].getNbTransplantations(waitingList);
 			sum[4] += tp;
-			writer.print(tp + " ");
+			writer.print(tp + "");
 			
 			writer.println();
 		}

@@ -30,10 +30,13 @@ public class ILPMatching extends Matching {
 		}
 	}
 	
-	void cancelWaitingList() {
-		
+	public void runDirectDonation() {
+		HashSet<Patient> notAssignedCopy = new HashSet<Patient>(notAssigned);
+		for (Patient P : notAssignedCopy)
+			if(P.isCompatible(P.kidney)) {
+				assign(P); // assigning ki to ti
+			}
 	}
-	public  void runDirectDonation() { };
 	
 	int branchAndBound(double[][] A,double[] b,double[]c,ConsType[] rel,double bound, int interRes) throws Exception {
 		// Maximises cTx with constraints Ax rel b where rel is a vector of type of constraints  (<=,>= or =)
