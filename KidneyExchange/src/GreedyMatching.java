@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedList;
 
 public class GreedyMatching extends Matching {
 	
@@ -9,20 +8,7 @@ public class GreedyMatching extends Matching {
 		super(T);
 		graph = new CompatibilityGraph();
 	}
-	
-	GreedyMatching(Matching M) {
-		graph = new CompatibilityGraph(M.graph);
-		this.assigned = new HashSet<Patient>();
-		for (Patient p: M.assigned)
-			this.assigned.add(graph.patientsById.get(p.id));
-		this.notAssigned = new HashSet<Patient>();
-		for (Patient p: M.notAssigned)
-			this.notAssigned.add(graph.patientsById.get(p.id));
-		this.n = M.n;
-		this.nbNotAssigned = M.nbNotAssigned;
-		this.cancelWaitingList();
-	}
-	
+
 	GreedyMatching(String path) throws IOException {
 		graph = new CompatibilityGraph(path);
 		this.n = graph.n;
@@ -30,22 +16,6 @@ public class GreedyMatching extends Matching {
 		this.notAssigned = graph.getVertices();
 		this.assigned = new HashSet<Patient>();
 	}
-	
-	void cancelWaitingList() {
-		for (Patient p: new LinkedList<Patient>(assigned))
-			if (p.kidney == 0) {
-				assigned.remove(p);
-				notAssigned.add(p);
-				for (Patient q: graph.adj.keySet())
-					if (p.K[q.id] && q.K[p.id]) {
-						graph.addEdge(p, q);
-						graph.addEdge(q, p);
-					}
-				nbNotAssigned++;
-				p.isAssigned = false;
-			}
-	}
-	
 	
 	public void runDirectDonation() {
 		HashSet<Patient> notAssignedCopy = new HashSet<Patient>(notAssigned);

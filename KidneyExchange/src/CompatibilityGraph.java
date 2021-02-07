@@ -8,10 +8,6 @@ public class CompatibilityGraph extends Graph {
 		super();
 	}
 	
-	public CompatibilityGraph(Graph g) {
-		super(g);
-	}
-	
 	CompatibilityGraph(String path) throws IOException {
 		readFile(path);
 	    for(Patient p: adj.keySet())

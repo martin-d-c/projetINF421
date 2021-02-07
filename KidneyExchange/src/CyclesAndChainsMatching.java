@@ -19,30 +19,6 @@ public class CyclesAndChainsMatching extends Matching {
 		ruleB = true;
 	}
 	
-	public CyclesAndChainsMatching(Matching M) {
-		graph = new AssignationGraph(M.graph);
-		this.assigned = new HashSet<Patient>();
-		for (Patient p: M.assigned)
-			this.assigned.add(graph.patientsById.get(p.id));
-		this.notAssigned = new HashSet<Patient>();
-		for (Patient p: M.notAssigned)
-			this.notAssigned.add(graph.patientsById.get(p.id));
-		this.n = M.n;
-		this.nbNotAssigned = M.nbNotAssigned;
-		graph.removeAllEdges();
-		kidneyAvailable = new boolean[this.n+1];
-		for (int i = 1; i < n+1; i++) kidneyAvailable[i] = true;
-		patientsById = graph.patientsById;
-		for (Patient p: assigned) {
-			kidneyAvailable[p.kidney] = false;
-			//patientsById.put(p.id, p);
-		}
-		/*for (Patient p: notAssigned)
-			patientsById.put(p.id, p);*/
-		ruleB = true;
-		this.cancelWaitingList();
-	}
-	
 	public CyclesAndChainsMatching(String path) throws IOException {
 		graph = new AssignationGraph(path);
 		this.n = graph.n;
@@ -58,15 +34,6 @@ public class CyclesAndChainsMatching extends Matching {
 		ruleB = true;
 	}
 	
-	void cancelWaitingList() {
-		for (Patient p: new LinkedList<Patient>(assigned))
-			if (p.kidney == 0) {
-				assigned.remove(p);
-				notAssigned.add(p);
-				nbNotAssigned++;
-				p.isAssigned = false;
-			}
-	}
 	
 	public void runDirectDonation() {
 		HashSet<Patient> notAssignedCopy = new HashSet<Patient>(notAssigned);
@@ -79,8 +46,8 @@ public class CyclesAndChainsMatching extends Matching {
 	}
 	
 	
-	/*Rule A: O()
-	 *Rule B: O()*/
+	/*Rule A: O(n^3)
+	 *Rule B: O(n^3)*/
 	public void match() {
 
 		boolean firstRound = true;
