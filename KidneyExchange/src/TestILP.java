@@ -20,7 +20,8 @@ public class TestILP {
 		writer.print("Achieved objective value : ");
 		writer.println(test1.solutionILP.getOptimumValue());
 		writer.print("CPU time :");
-		writer.println(endTime1-startTime1);
+		writer.print(endTime1-startTime1);
+		writer.println(" ms");
 		
 		writer.println("---------------------------------");
 		
@@ -29,8 +30,8 @@ public class TestILP {
 		writer.print("Achieved objective value : ");
 		writer.println(test2.solutionILP.getOptimumValue());
 		writer.print("CPU time :");
-		writer.println(endTime2-startTime2);
-		
+		writer.print(endTime2-startTime2);
+		writer.println(" ms");
 		writer.close();
 	}
 

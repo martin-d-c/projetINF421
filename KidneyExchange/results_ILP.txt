@@ -13,7 +13,7 @@ Patient 1 --> Kidney 0
 Patient 10 --> Kidney 0
 
 Achieved objective value : 3.0
-CPU time :321
+CPU time :277 ms
 ---------------------------------
 Test 2
 Patient 12 --> Kidney 0
@@ -30,4 +30,4 @@ Patient 3 --> Kidney 9
 Patient 7 --> Kidney 0
 
 Achieved objective value : 9.0
-CPU time :92
+CPU time :74 ms
