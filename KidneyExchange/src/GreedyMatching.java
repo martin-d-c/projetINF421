@@ -54,9 +54,9 @@ public class GreedyMatching extends Matching {
 				assign(P); // assigning ki to ti
 	}
 	
-	public void match() {
+	public void match() { // O(n(d+log(n))
 		
-		// Initialization
+		// Initialization O(nlog(n))
 		Patient[] T = new Patient[this.nbNotAssigned];
 		int j = 0;
 		for(Patient P : this.notAssigned) {
@@ -66,7 +66,7 @@ public class GreedyMatching extends Matching {
 		}
 		Arrays.sort(T);
 		
-		// Assigning the preferred kidneys
+		// Assigning the preferred kidneys O(nd)
 		for (int i = 0; i < T.length; i++) {
 			Patient preferredPatient = T[i]; 
 			if(!T[i].isAssigned) {
@@ -84,6 +84,7 @@ public class GreedyMatching extends Matching {
 			}
 		}
 		
+		// Final step O(n)
 		HashSet<Patient> notAssignedCopy = new HashSet<Patient>(notAssigned);
 		for (Patient P : notAssignedCopy) {
 			if (P.K[P.id]) {

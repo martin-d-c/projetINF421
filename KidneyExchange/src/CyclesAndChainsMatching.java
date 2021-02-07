@@ -79,14 +79,15 @@ public class CyclesAndChainsMatching extends Matching {
 	}
 	
 	
-	
+	/*Rule A: O()
+	 *Rule B: O()*/
 	public void match() {
 
 		boolean firstRound = true;
 		
-		while (!notAssigned.isEmpty()) {
+		while (!notAssigned.isEmpty()) { // O(n^3)
 			
-			for (Patient p: notAssigned) {
+			for (Patient p: notAssigned) { // O(n^2)
 				// 1st round: each patient has to point towards his most preferred kidney
 				// Other rounds: changing only if current preferred kidney not available
 				if (!this.kidneyAvailable[p.kidney] || firstRound) {
@@ -105,8 +106,8 @@ public class CyclesAndChainsMatching extends Matching {
 			}
 			firstRound = false;
 			
-			Patient cycle = graph.getCycle();
-			if (cycle != null) { // Cycle: assign
+			Patient cycle = graph.getCycle(); // O(n^2)
+			if (cycle != null) { // Cycle: assign --> O(n)
 				Patient p = (Patient) graph.adj.get(cycle).toArray()[0];
 				Patient pred = cycle;
 				while (p != cycle) {
@@ -120,7 +121,7 @@ public class CyclesAndChainsMatching extends Matching {
 				this.kidneyAvailable[p.kidney] = false;
 				graph.removeEdge(pred, p);
 			}
-			else { // No cycle: looking for the right w-chain according to the selected rule
+			else { // No cycle: looking for the right w-chain according to the selected rule --> O(n^2) / O(n)
 				Patient tail;
 				if (ruleB) tail = selectChainRuleB();
 				else tail = selectChainRuleA();
@@ -135,15 +136,17 @@ public class CyclesAndChainsMatching extends Matching {
 	}
 	
 	
-	Patient selectChainRuleA() {
+	
+	
+	Patient selectChainRuleA() { // O(n^2)
 		HashSet<Patient> visited = new HashSet<Patient>(); // size -> O(1)
-		// patients: {(highest_priority_in_the_w-chain, tail_of_the_w-chain)}
+		// patients: {(tail_of_the_w-chain, priorities_in_the_w-chain)}
 		HashMap<Patient, LinkedList<Integer>> patients = new HashMap<Patient, LinkedList<Integer>>(); // size -> O(1)
 		int d_max = 0;
 		if (notAssigned.isEmpty()) return null;
-		for (Patient p: notAssigned)
+		for (Patient p: notAssigned) // O(n^2)
 			if (!visited.contains(p)) {
-				LinkedList<Integer> dp = graph.chainSizeAndPriority(p, visited);
+				LinkedList<Integer> dp = graph.chainSizeAndPriority(p, visited); // O(n)
 				int d = dp.poll();
 				LinkedList<Integer> priority = dp; // List of priorities of all the elements of the w-chain
 				if (d > d_max) {
@@ -157,13 +160,13 @@ public class CyclesAndChainsMatching extends Matching {
 		// Selecting the w-chain among the longest
 		if (patients.size() == 1)
 			return (Patient) patients.keySet().toArray()[0];
-		for (Patient p: patients.keySet())
+		for (Patient p: patients.keySet()) // O(nlog(n))
 			Collections.sort(patients.get(p));
 		LinkedList<Patient> candidates = new LinkedList<Patient>(patients.keySet()); // size en O(1)
 		LinkedList<Patient> new_candidates = new LinkedList<Patient>();
 		
 		// Looking for the candidate containing the highest(s) priority patients
-		while (candidates.size() > 1) {
+		while (candidates.size() > 1) { // O(max(candidate_size) nb_candidates) --> O(n^2)
 			int min_prio = n + 1;
 			for (Patient p: candidates) {
 				Integer prio = patients.get(p).poll();
@@ -183,7 +186,7 @@ public class CyclesAndChainsMatching extends Matching {
 		return candidates.element();
 	}
 	
-	Patient selectChainRuleB() {
+	Patient selectChainRuleB() { // O(n)
 		Patient p = null;
 		for (Patient q: notAssigned)
 			if (p == null || q.compareTo(p) < 0)

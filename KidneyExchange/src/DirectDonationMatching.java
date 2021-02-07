@@ -31,7 +31,7 @@ public class DirectDonationMatching extends Matching {
 		match();
 	}
 	
-	public void match() {
+	public void match() { // O(n)
 		HashSet<Patient> notAssignedCopy = new HashSet<Patient>(notAssigned);
 		for (Patient P : notAssignedCopy) {
 			if(P.isCompatible(P.kidney))

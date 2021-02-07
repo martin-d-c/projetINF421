@@ -100,7 +100,7 @@ public abstract class Graph {
 	}
 	
 	
-	Patient getCycle(){
+	Patient getCycle(){ // O(n^2)
 		HashSet<Patient> visited = new HashSet<Patient>();
 		HashSet<Patient> visitedCycle = new HashSet<Patient>();
 		for (Patient P : this.adj.keySet()) {
@@ -126,7 +126,7 @@ public abstract class Graph {
 	
 	// HYPOTHESE : il n'y a pas de cycle dans le graphe
 		// A OPTIMISER : stocker les distances et priorités des visited
-		LinkedList<Integer> chainSizeAndPriority(Patient p, HashSet<Patient> visited) {
+		LinkedList<Integer> chainSizeAndPriority(Patient p, HashSet<Patient> visited) { // O(n)
 			LinkedList<Integer> res = new LinkedList<Integer>(); // size, priority
 			res.add(1);
 			visited.add(p);
