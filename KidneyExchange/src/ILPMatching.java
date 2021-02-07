@@ -17,23 +17,27 @@ public class ILPMatching extends Matching {
 	
 	DirectedCompatibilityGraph graph;
 	Solution solutionILP;
-	
+	HashMap<Integer, Patient> patientsById;
 	public ILPMatching(String path) throws IOException {
 		graph = new DirectedCompatibilityGraph(path);
 		this.n = graph.n;
 		this.nbNotAssigned = graph.n;
 		this.notAssigned = graph.getVertices();
+		this.assigned = new HashSet<Patient>();
+		patientsById = new HashMap<Integer, Patient>();
+		for (Patient p: notAssigned) {
+			patientsById.put(p.id, p);
+		}
 	}
 	
 	int branchAndBound(double[][] A,double[] b,double[]c,ConsType[] rel,double bound, int interRes) throws Exception {
-		
         LinearObjectiveFunction fo = new LinearObjectiveFunction(c, GoalType.MAX);
  
         ArrayList< Constraint > constraints = new ArrayList< Constraint >();
         for(int i=0; i < A.length; i++) {
             constraints.add(new Constraint(A[i], rel[i], b[i]));
         }
- 
+        
         LP lp = new LP(fo,constraints); 
         SolutionType solution_type=lp.resolve();
         
@@ -93,14 +97,21 @@ public class ILPMatching extends Matching {
 		int nbEdges = 0;
 		for(int[] ligne : this.graph.adjMatrix) { for(int i :ligne) { if(i==1) {nbEdges++;} }}
 		int[][] listEdges = new int[nbEdges][2];
-		HashMap<int[],Integer> edges = new HashMap<int[],Integer>();
+		HashMap<Integer,HashMap<Integer,Integer>> edges = new HashMap<Integer,HashMap<Integer,Integer>>();
 		int k=0;
 		for(int i =1;i<n+1;i++) {
 			for(int j =1;j<n+1;j++) {
 				if(this.graph.adjMatrix[i][j] ==1) {
 					listEdges[k][0] = i;
 					listEdges[k][1] = j;
-					edges.put(listEdges[k], k);
+					if(edges.containsKey(i)) {
+						edges.get(i).put(j,k);
+					}
+					else {
+					HashMap<Integer,Integer> num = new HashMap<Integer,Integer>();
+					num.put(j,k);
+					edges.put(i, num);
+					}
 					k++;
 				}
 			}
@@ -132,8 +143,9 @@ public class ILPMatching extends Matching {
 			int prev = L.getFirst();
 			L.removeFirst();
 			for(int i :L) {
-				int[] edge = {prev,i};
-				int numVariable = edges.get(edge);
+				
+				
+				int numVariable = edges.get(prev).get(i);
 				A[k+2*n][numVariable] =1;
 				prev=i;
 			}
@@ -142,16 +154,28 @@ public class ILPMatching extends Matching {
 		
 		
 		branchAndBound(A,b,c,rel,Double.POSITIVE_INFINITY,0);
-		int i=1,j =1;
+		int numVariable=0;
+		HashSet<Integer> assignedKidneys = new HashSet<Integer>();
 		for(Variable var : solutionILP.getVariables()) {
 			if(var.getValue() ==1) {
-				Patient P = new Patient(j,new boolean[n],new int [n]);
-				P.assign(i);
-				this.assigned.add(P);
+				int i = listEdges[numVariable][0];
+				int j = listEdges[numVariable][1];
+				
+				this.assign(this.patientsById.get(j),i);
+				
+				assignedKidneys.add(i);
 			}
 			
-			if(j==n) {i++;j=1;}
-			else {j++;}
+			numVariable++;
+		}
+		HashSet<Patient> notAssignedCopy = new HashSet<Patient>(notAssigned);
+		for(Patient P : notAssignedCopy) {
+			if(this.graph.adjMatrix[P.id][P.id] == 1 && !assignedKidneys.contains(P.id)) {
+				assign(P,P.id);
+			}
+			else {
+				assign(P,0);
+			}
 		}
 		return this.assigned;
 	}
