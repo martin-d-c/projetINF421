@@ -5,23 +5,23 @@ public class Test {
 
 	public static void main(String[] args) throws IOException,Exception {
 		System.out.println("Direct Donation");
-		SimpleMatching test1 = new SimpleMatching("testPrimaire.txt");
-		test1.directDonation();
+		DirectDonationMatching test1 = new DirectDonationMatching("testFile1.txt");
+		test1.match();
 		System.out.println(test1);
 		
 		System.out.println("Greedy Matching");
-		SimpleMatching test2 = new SimpleMatching("testPrimaire.txt");
-		test2.greedyMatching();
+		GreedyMatching test2 = new GreedyMatching("testFile1.txt");
+		test2.match();
 		System.out.println(test2);
 		
 		System.out.println("Cycles and Chains Matching - Rule A");
-		CyclesAndChainsMatching test3 = new CyclesAndChainsMatching("testPrimaire.txt");
-		test3.match(false);
+		CyclesAndChainsMatching test3 = new CyclesAndChainsMatching("testFile1.txt");
+		test3.match();
 		System.out.println(test3);
 		
 		System.out.println("Cycles and Chains Matching - Rule B");
-		CyclesAndChainsMatching test4 = new CyclesAndChainsMatching("testPrimaire.txt");
-		test4.match(true);
+		CyclesAndChainsMatching test4 = new CyclesAndChainsMatching("testFile1.txt");
+		test4.match();
 		System.out.println(test4);
 		
 		System.out.println("Minimum infeasible paths");

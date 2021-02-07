@@ -25,6 +25,15 @@ public class Patient implements Comparable<Patient> {
 		this.bloodType = bloodType;
 	}
 	
+	Patient (Patient p) {
+		this.id = p.id;;
+		this.isAssigned = p.isAssigned;
+		this.kidney = p.kidney;
+		this.K = p.K;
+		this.P = p.P;
+		this.bloodType = p.bloodType;
+	}
+	
 	void assign(int i) {
 		this.kidney = i;
 		this.isAssigned = true;

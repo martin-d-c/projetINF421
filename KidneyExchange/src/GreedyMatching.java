@@ -11,8 +11,15 @@ public class GreedyMatching extends Matching {
 	}
 	
 	GreedyMatching(Matching M) {
-		super(M);
 		graph = new CompatibilityGraph(M.graph);
+		this.assigned = new HashSet<Patient>();
+		for (Patient p: M.assigned)
+			this.assigned.add(graph.patientsById.get(p.id));
+		this.notAssigned = new HashSet<Patient>();
+		for (Patient p: M.notAssigned)
+			this.notAssigned.add(graph.patientsById.get(p.id));
+		this.n = M.n;
+		this.nbNotAssigned = M.nbNotAssigned;
 		this.cancelWaitingList();
 	}
 	
@@ -39,6 +46,13 @@ public class GreedyMatching extends Matching {
 			}
 	}
 	
+	
+	public void runDirectDonation() {
+		HashSet<Patient> notAssignedCopy = new HashSet<Patient>(notAssigned);
+		for (Patient P : notAssignedCopy)
+			if(P.isCompatible(P.kidney))
+				assign(P); // assigning ki to ti
+	}
 	
 	public void match() {
 		

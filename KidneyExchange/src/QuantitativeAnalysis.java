@@ -82,38 +82,74 @@ public class QuantitativeAnalysis {
 	}
 	
 	
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException, Exception{
 		
 		generateConfiguration();
 		
-		/*CyclesAndChainsMatching M = new CyclesAndChainsMatching("testfile1.txt");
-		M.match(); // rule B
-		System.out.println(M);
-		
-		System.out.println(M.getNbTransplantations(generateCadavers()));*/
-		
 		PrintWriter writer = new PrintWriter(new File("results.txt"));
+		writer.print("DirectDonation Greedy CyclesAndChains  GreedyWithPreprocessing CyclesAndChainsWithPreprocessing");
+		writer.println();
 		
-		Matching[][] matchings = new Matching[3][N];
+		Matching[][] matchings = new Matching[5][N];
+		float[] sum = new float[5]; // to compute the averages
+		int tp;
+		
 		for (int i = 0; i < N; i++) {
 			int[] waitingList = generateCadavers();
 			String path = "testfile" + (i+1) + ".txt";
+			
 			matchings[0][i] = new DirectDonationMatching(path);
 			matchings[0][i].match();
-			writer.print(matchings[0][i].getNbTransplantations(waitingList) + " ");
+			tp = matchings[0][i].getNbTransplantations(waitingList);
+			sum[0] += tp;
+			writer.print(tp + " ");
+			
 			matchings[1][i] = new GreedyMatching(path);
-			//matchings[1][i] = new GreedyMatching(matchings[0][i]);
 			matchings[1][i].match();
+			tp = matchings[1][i].getNbTransplantations(waitingList);
+			sum[1] += tp;
+			writer.print(tp + " ");
+			
 			matchings[2][i] = new CyclesAndChainsMatching(path);
-			//matchings[2][i] = new CyclesAndChainsMatching(matchings[0][i]);
 			matchings[2][i].match(); // rule B
-			System.out.println("0 "+matchings[0][i]);
-			writer.print((matchings[1][i].getNbTransplantations(waitingList)) + " ");
-			System.out.println("1 "+matchings[1][i]);
-			writer.print((matchings[2][i].getNbTransplantations(waitingList)) + "");
-
+			tp = matchings[2][i].getNbTransplantations(waitingList);
+			sum[2] += tp;
+			writer.print(tp + "  ");
+			
+			// With Direct Donation as preprocessing
+			/*matchings[3][i] = new GreedyMatching(matchings[0][i]);
+			matchings[3][i].match();
+			tp = matchings[3][i].getNbTransplantations(waitingList);
+			sum[3] += tp;
+			writer.print(tp + " ");
+			
+			matchings[4][i] = new CyclesAndChainsMatching(matchings[0][i]);
+			matchings[4][i].match();
+			tp = matchings[4][i].getNbTransplantations(waitingList);
+			sum[4] += tp;
+			writer.print(tp + " ");*/
+			matchings[3][i] = new GreedyMatching(path);
+			matchings[3][i].runDirectDonation();
+			matchings[3][i].match();
+			tp = matchings[3][i].getNbTransplantations(waitingList);
+			sum[3] += tp;
+			writer.print(tp + " ");
+			
+			matchings[4][i] = new CyclesAndChainsMatching(path);
+			matchings[4][i].runDirectDonation();
+			matchings[4][i].match();
+			tp = matchings[4][i].getNbTransplantations(waitingList);
+			sum[4] += tp;
+			writer.print(tp + " ");
+			
 			writer.println();
 		}
+		
+		// Printing the averages
+		writer.println();
+		writer.println("AVERAGE");
+		writer.println(sum[0]/N + " " + sum[1]/N + " " + sum[2]/N + "  " + sum[3]/N + " " + sum[4]/N);
+		
 		writer.close();
 	}
 }

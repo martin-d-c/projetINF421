@@ -28,9 +28,17 @@ public abstract class Matching {
 	
 	abstract void cancelWaitingList();
 	
+	public abstract void runDirectDonation();
+	
+	public abstract void match() throws Exception;
+	
 	Matching(Matching M) {
-		this.assigned = new HashSet<Patient>(M.assigned);
-		this.notAssigned = new HashSet<Patient>(M.notAssigned);
+		this.assigned = new HashSet<Patient>();
+		for (Patient p: M.assigned)
+			this.assigned.add(new Patient(p));
+		this.notAssigned = new HashSet<Patient>();
+		for (Patient p: M.notAssigned)
+			this.notAssigned.add(new Patient(p));
 		this.n = M.n;
 		this.nbNotAssigned = M.nbNotAssigned;
 	}
@@ -65,15 +73,19 @@ public abstract class Matching {
 	}
 	
 	
-	
+	// waitingList will not be modified
 	int getNbTransplantations(int[] waitingList) { // waitingList contains the number of cadavers for each bloodType  (O,A,B,AB)
 		int nbTransplantations = 0;
+		int Ocount = waitingList[0];
+		int Acount = waitingList[1];
+		int Bcount = waitingList[2];
+		int ABcount = waitingList[3];
 		for(Patient P : this.assigned) {
 			if(P.kidney==0) {
-				if(P.bloodType.equals("O") && waitingList[0]>0) { nbTransplantations++; waitingList[0]--;}
-				else if(P.bloodType.equals("A") && waitingList[1]>0) { nbTransplantations++; waitingList[1]--;}
-				else if(P.bloodType.equals("B") && waitingList[2]>0) { nbTransplantations++; waitingList[2]--;}
-				else if(P.bloodType.equals("AB") &&waitingList[3]>0) { nbTransplantations++; waitingList[3]--;}
+				if(P.bloodType.equals("O") && Ocount>0) { nbTransplantations++; Ocount--;}
+				else if(P.bloodType.equals("A") && Acount>0) { nbTransplantations++; Acount--;}
+				else if(P.bloodType.equals("B") && Bcount>0) { nbTransplantations++; Bcount--;}
+				else if(P.bloodType.equals("AB") &&ABcount>0) { nbTransplantations++; ABcount--;}
 			}
 			else {
 				nbTransplantations++;
@@ -81,10 +93,7 @@ public abstract class Matching {
 		}
 		return nbTransplantations;
 	}
-	
-	
-	public abstract void match() throws Exception;
-	
+		
 	
 	public String toString() {
 		StringBuffer bf = new StringBuffer();

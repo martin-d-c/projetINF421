@@ -11,23 +11,28 @@ import java.util.HashMap;
 public abstract class Graph {
 	
 	HashMap<Patient,HashSet<Patient>> adj;
+	HashMap<Integer, Patient> patientsById;
 	int n; // number of vertices
 	
 	Graph() {
 		this.adj = new HashMap<Patient,HashSet<Patient>>();
+		this.patientsById = new HashMap<Integer, Patient>();
 		this.n = 0;
 	}
 	
 	Graph(Graph g) { // creates a copy of g
+		this.adj = new HashMap<Patient,HashSet<Patient>>();
+		this.patientsById = new HashMap<Integer, Patient>();
 		if (g == null) {
-			this.adj = new HashMap<Patient,HashSet<Patient>>();
 			this.n = 0;
 			return;
 		}
-		this.adj = new HashMap<Patient,HashSet<Patient>>();
-		for (Patient p: g.adj.keySet()) {
-			this.adj.put(p, new HashSet<Patient>(g.adj.get(p)));
-		}
+		for (Patient p: g.adj.keySet())
+			addPatient(new Patient(p));
+		for (Patient p: adj.keySet()) 
+			for (Patient q: adj.keySet())
+				if (g.hasEdge(g.patientsById.get(p.id), g.patientsById.get(q.id)))
+					addEdge(p, q);
 		this.n = g.n;
 	}
 	
@@ -65,8 +70,10 @@ public abstract class Graph {
 	}
 	
 	void addPatient(Patient P){
-		if (!adj.containsKey(P))
+		if (!adj.containsKey(P)) {
 			this.adj.put(P, new HashSet<Patient>());
+			this.patientsById.put(P.id, P);
+		}
 	}
 	
 	void addEdge(Patient P, Patient Q) {
@@ -130,5 +137,10 @@ public abstract class Graph {
 				res.add(p.id);
 			}
 			return res;
+		}
+
+		public void removeAllEdgesFrom(Patient p) {
+			if (adj.containsKey(p))
+				adj.get(p).clear();
 		}
 }

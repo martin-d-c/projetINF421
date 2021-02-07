@@ -27,6 +27,10 @@ public class DirectDonationMatching extends Matching {
 			}
 	}
 	
+	public void runDirectDonation() {
+		match();
+	}
+	
 	public void match() {
 		HashSet<Patient> notAssignedCopy = new HashSet<Patient>(notAssigned);
 		for (Patient P : notAssignedCopy) {
