@@ -16,23 +16,20 @@ public class Test {
 		
 		System.out.println("Cycles and Chains Matching - Rule A");
 		CyclesAndChainsMatching test3 = new CyclesAndChainsMatching("testFile1.txt");
+		test3.ruleB = false;
 		test3.match();
 		System.out.println(test3);
 		
 		System.out.println("Cycles and Chains Matching - Rule B");
 		CyclesAndChainsMatching test4 = new CyclesAndChainsMatching("testFile1.txt");
 		test4.match();
+		test3.ruleB = true;
 		System.out.println(test4);
 		
 		System.out.println("Minimum infeasible paths");
 		DirectedCompatibilityGraph graph = new DirectedCompatibilityGraph("test1.txt");
 		LinkedList<LinkedList<Patient>> paths = graph.computeAllMinimalInfeasiblePaths(3);
 		System.out.println(DirectedCompatibilityGraph.toId(paths));
-		
-		System.out.println("ILP Matching");
-		ILPMatching test5 = new ILPMatching("test1.txt");
-		test5.match();
-		System.out.println(test5);
 	}
 
 }
