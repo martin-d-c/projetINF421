@@ -31,30 +31,22 @@ public class DirectedCompatibilityGraph extends Graph {
 
 	    this.K = (int) Double.parseDouble(br.readLine());
 	    
+	    // Construct the adjacency matrix of the graph
 	    this.adjMatrix = new int[n+1][n+1];
 	    for(int i =1; i<n+1;i++) {
 	    	String[] ligne = br.readLine().split("   ");
-	    	
-	    	
 	    	for(int j = 1;j<ligne.length+1;j++) {
-	    		
 	    		adjMatrix[i][j] = (int)Double.parseDouble(ligne[j-1]);
-	    		
 	    	}
-	    	
 	    }
+	    
 	    for(int i =1; i<n+1;i++) {
-	    	
 	    	boolean[] K = new boolean[n+1];
 	    	int[] P = new int[n+1];
-	    	
 	    	for(int j = 1;j<n+1;j++) {
-	    		
 	    		if( adjMatrix[j][i] == 1) {
 	    			K[j] = true;
 	    		}
-	    		
-	    		
 	    	}
 	    	addPatient(new Patient(i,K,P));
 	    }
