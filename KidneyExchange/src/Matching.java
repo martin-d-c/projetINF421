@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
-
 public abstract class Matching {
 	
 	int n;
@@ -84,7 +83,7 @@ public abstract class Matching {
 	}
 	
 	
-	public abstract void match();
+	public abstract void match() throws Exception;
 	
 	
 	public String toString() {

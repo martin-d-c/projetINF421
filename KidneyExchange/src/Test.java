@@ -16,13 +16,12 @@ public class Test {
 		
 		System.out.println("Cycles and Chains Matching - Rule A");
 		CyclesAndChainsMatching test3 = new CyclesAndChainsMatching("testPrimaire.txt");
-		test3.ruleB = false;
-		test3.match();
+		test3.match(false);
 		System.out.println(test3);
 		
 		System.out.println("Cycles and Chains Matching - Rule B");
 		CyclesAndChainsMatching test4 = new CyclesAndChainsMatching("testPrimaire.txt");
-		test4.match();
+		test4.match(true);
 		System.out.println(test4);
 		
 		System.out.println("Minimum infeasible paths");

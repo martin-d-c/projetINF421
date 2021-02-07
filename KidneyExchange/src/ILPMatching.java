@@ -30,6 +30,9 @@ public class ILPMatching extends Matching {
 		}
 	}
 	
+	void cancelWaitingList() {
+		
+	}
 	int branchAndBound(double[][] A,double[] b,double[]c,ConsType[] rel,double bound, int interRes) throws Exception {
         LinearObjectiveFunction fo = new LinearObjectiveFunction(c, GoalType.MAX);
  
@@ -90,8 +93,8 @@ public class ILPMatching extends Matching {
         	return interRes;
         }
 	}
-	HashSet<Patient> match()  throws Exception{
-		LinkedList<LinkedList<Integer>> infeasiblePaths = DirectedCompatibilityGraph.toId(this.graph.computeAllMinimalInfeasiblePaths(this.graph.K));
+	public void match()  throws Exception{
+		LinkedList<LinkedList<Integer>> infeasiblePaths = DirectedCompatibilityGraph.toId(this.graph.computeAllMinimalInfeasiblePaths(this.graph.K+1));
 		int p = infeasiblePaths.size()+2*n;
 		
 		int nbEdges = 0;
@@ -156,6 +159,7 @@ public class ILPMatching extends Matching {
 		branchAndBound(A,b,c,rel,Double.POSITIVE_INFINITY,0);
 		int numVariable=0;
 		HashSet<Integer> assignedKidneys = new HashSet<Integer>();
+		k=0;
 		for(Variable var : solutionILP.getVariables()) {
 			if(var.getValue() ==1) {
 				int i = listEdges[numVariable][0];
@@ -177,6 +181,6 @@ public class ILPMatching extends Matching {
 				assign(P,0);
 			}
 		}
-		return this.assigned;
+		
 	}
 }
