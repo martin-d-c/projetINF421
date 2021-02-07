@@ -1,33 +1,33 @@
 Test 1
-Patient 11 --> Kidney 2
-Patient 2 --> Kidney 3
-Patient 7 --> Kidney 0
-Patient 9 --> Kidney 0
-Patient 3 --> Kidney 11
-Patient 5 --> Kidney 0
-Patient 4 --> Kidney 0
-Patient 8 --> Kidney 0
-Patient 6 --> Kidney 0
-Patient 12 --> Kidney 0
-Patient 1 --> Kidney 0
 Patient 10 --> Kidney 0
+Patient 2 --> Kidney 3
+Patient 4 --> Kidney 0
+Patient 6 --> Kidney 0
+Patient 11 --> Kidney 2
+Patient 8 --> Kidney 0
+Patient 12 --> Kidney 0
+Patient 3 --> Kidney 11
+Patient 1 --> Kidney 0
+Patient 7 --> Kidney 0
+Patient 5 --> Kidney 0
+Patient 9 --> Kidney 0
 
-Achieved objective value : 3.0
-CPU time :321
+Achieved objective value: 3.0
+CPU time: 491 ms
 ---------------------------------
 Test 2
-Patient 12 --> Kidney 0
-Patient 9 --> Kidney 1
 Patient 8 --> Kidney 0
-Patient 1 --> Kidney 3
-Patient 10 --> Kidney 11
-Patient 2 --> Kidney 10
-Patient 4 --> Kidney 6
 Patient 5 --> Kidney 4
-Patient 11 --> Kidney 2
+Patient 4 --> Kidney 6
+Patient 10 --> Kidney 11
 Patient 6 --> Kidney 5
-Patient 3 --> Kidney 9
+Patient 9 --> Kidney 1
+Patient 1 --> Kidney 3
+Patient 11 --> Kidney 2
+Patient 12 --> Kidney 0
+Patient 2 --> Kidney 10
 Patient 7 --> Kidney 0
+Patient 3 --> Kidney 9
 
-Achieved objective value : 9.0
-CPU time :92
+Achieved objective value: 9.0
+CPU time: 66 ms

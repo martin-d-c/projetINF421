@@ -35,7 +35,7 @@ public class TestILP {
 		writer.print("CPU time: ");
 		writer.print(endTime2-startTime2);
 		writer.println(" ms");
-		
+
 		writer.close();
 	}
 
