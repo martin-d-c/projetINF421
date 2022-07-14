@@ -7,29 +7,30 @@ Repository for the [Kidney Exchange project](https://marceaucoupechoux.wp.imt.fr
 ```
 .
 ├── README.md
-├── lib : SSC library
-├── report : project's report (in french)  
-├── src : implemented classes
-	├── AssignationGraph.java
-	├── CompatibilityGraph.java
-	├── CyclesAndChainsMatching.java
-	├── DirectDonationMatching.java
-	├── DirectCompatibilityGraph.java
-	├── Graph.java
-	├── GreedyMatching.java
-	├── ILPMatching.java
-	├── Matching.java
-	├── Patient.java
-	├── QuantitativeAnalysis.java
-	├── Test.java
-	├── TestILP.java
-├── main_results.txt
-├── results_ILP.txt
-├── results.txt
-├── test1.txt
-├── test2.txt
-├── testPrimaire.txt
-├── ...
+├── KidneyExchange
+	├── lib : SSC library
+	├── report : project's report (in french)  
+	├── src : implemented classes
+		├── AssignationGraph.java
+		├── CompatibilityGraph.java
+		├── CyclesAndChainsMatching.java
+		├── DirectDonationMatching.java
+		├── DirectCompatibilityGraph.java
+		├── Graph.java
+		├── GreedyMatching.java
+		├── ILPMatching.java
+		├── Matching.java
+		├── Patient.java
+		├── QuantitativeAnalysis.java
+		├── Test.java
+		├── TestILP.java
+	├── main_results.txt
+	├── results_ILP.txt
+	├── results.txt
+	├── test1.txt
+	├── test2.txt
+	├── testPrimaire.txt
+	├── ...
 ```
 ## Usage
 
